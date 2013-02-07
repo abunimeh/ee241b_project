@@ -10,21 +10,21 @@ decoder DUT0 (.A(A), .Z(Z));
 
 initial begin
   A <= 4'd0;
-  #1 A<= 4'd1;
-  #1 A<= 4'd2;
-  #1 A<= 4'd3;
-  #1 A<= 4'd4;
-  #1 A<= 4'd5;
-  #1 A<= 4'd6;
-  #1 A<= 4'd7;
-  #1 A<= 4'd9;
-  #1 A<= 4'd9;
-  #1 A<= 4'd10;
-  #1 A<= 4'd11;
-  #1 A<= 4'd12;
-  #1 A<= 4'd13;
-  #1 A<= 4'd14;
-  #1 A<= 4'd15;
+ #`CLOCK_PERIOD A<= 4'd1;
+ #`CLOCK_PERIOD A<= 4'd2;
+ #`CLOCK_PERIOD A<= 4'd3;
+ #`CLOCK_PERIOD A<= 4'd4;
+ #`CLOCK_PERIOD A<= 4'd5;
+ #`CLOCK_PERIOD A<= 4'd6;
+ #`CLOCK_PERIOD A<= 4'd7;
+ #`CLOCK_PERIOD A<= 4'd9;
+ #`CLOCK_PERIOD A<= 4'd9;
+ #`CLOCK_PERIOD A<= 4'd10;
+ #`CLOCK_PERIOD A<= 4'd11;
+ #`CLOCK_PERIOD A<= 4'd12;
+ #`CLOCK_PERIOD A<= 4'd13;
+ #`CLOCK_PERIOD A<= 4'd14;
+ #`CLOCK_PERIOD A<= 4'd15;
 
 end
 
