@@ -71,7 +71,7 @@ vars = \
 	set MAP_FILE                    "$(techfile_dir)/tech2itf.map";\n \
 	set TLUPLUS_MAX_FILE            "$(tluplus_dir)/max.tluplus";\n \
 	set TLUPLUS_MIN_FILE            "$(tluplus_dir)/min.tluplus";\n \
-	set ALIB_DIR                    "/home/ff/cs250/stdcells/synopsys-32nm/multi_vt/alib";\n \
+	set ALIB_DIR                    "$(UCB_VLSI_HOME)/stdcells/synopsys-32nm/multi_vt/alib";\n \
 	set RTL_SOURCE_FILES            "$(notdir $(vsrcs))";\n \
 	set DCRM_CONSTRAINTS_INPUT_FILE "constraints.tcl";\n \
 	set REPORTS_DIR                 "$(reports_dir)";\n \
