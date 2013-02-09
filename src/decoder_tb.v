@@ -17,7 +17,7 @@ initial begin
  #`CLOCK_PERIOD A<= 4'd5;
  #`CLOCK_PERIOD A<= 4'd6;
  #`CLOCK_PERIOD A<= 4'd7;
- #`CLOCK_PERIOD A<= 4'd9;
+ #`CLOCK_PERIOD A<= 4'd8;
  #`CLOCK_PERIOD A<= 4'd9;
  #`CLOCK_PERIOD A<= 4'd10;
  #`CLOCK_PERIOD A<= 4'd11;
