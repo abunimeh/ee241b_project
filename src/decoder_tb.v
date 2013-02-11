@@ -6,10 +6,11 @@ reg [3:0] A;
 wire [15:0] Z;
 reg clk;
 
-
+# Fake clock does nothing
 decoder DUT0 (.A(A), .Z(Z), .clk(clk));
 
 initial begin
+
 $vcdpluson;
   A <= 4'd0;
  #`CLOCK_PERIOD A<= 4'd1;
