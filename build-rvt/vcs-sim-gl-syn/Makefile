@@ -29,13 +29,13 @@ vclibsrcs = \
 
 # Specify what the toplevel verilog module is
 
-toplevel = gcdGCDUnit_rtl
+toplevel = decoder
 
 # Verilog sources
 
 srcdir = $(basedir)/src
 vsrcs = \
-	$(srcdir)/gcdTestHarness_rtl.v \
+	$(srcdir)/decoder_tb.v \
 	../dc-syn/current-dc/results/$(toplevel).mapped.v \
 
 #--------------------------------------------------------------------

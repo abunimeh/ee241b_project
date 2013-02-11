@@ -4,11 +4,13 @@ module decoder_tb();
 
 reg [3:0] A;
 wire [15:0] Z;
+reg clk;
 
 
-decoder DUT0 (.A(A), .Z(Z));
+decoder DUT0 (.A(A), .Z(Z), .clk(clk));
 
 initial begin
+$vcdpluson;
   A <= 4'd0;
  #`CLOCK_PERIOD A<= 4'd1;
  #`CLOCK_PERIOD A<= 4'd2;
@@ -25,6 +27,7 @@ initial begin
  #`CLOCK_PERIOD A<= 4'd13;
  #`CLOCK_PERIOD A<= 4'd14;
  #`CLOCK_PERIOD A<= 4'd15;
+$vcdplusoff;
 
 end
 
