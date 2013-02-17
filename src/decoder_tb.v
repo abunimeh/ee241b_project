@@ -6,7 +6,7 @@ reg [3:0] A;
 wire [15:0] Z;
 reg clk;
 
-# Fake clock does nothing
+// Fake clock does nothing
 decoder DUT0 (.A(A), .Z(Z), .clk(clk));
 
 initial begin
