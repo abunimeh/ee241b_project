@@ -28,6 +28,7 @@
 #    cd ToolC; make
 #
 
+SHELL := /bin/bash
 default: pt-pwr
 
 tools:=
