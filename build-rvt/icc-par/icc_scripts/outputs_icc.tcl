@@ -32,6 +32,10 @@ if {[file exists [which $SIGNOFF_DRC_RUNSET]] } {
 }
 
 ##Change Names
+# Zimmer: add VDD/GND pin
+change_selection [get_net_shapes -filter \
+  "(net_type == Ground || net_type == Power) && route_type == \"P/G Strap\""]
+convert_wire_to_pin [get_selection]
 change_names -rules verilog -hierarchy
 save_mw_cel -as change_names_icc
 close_mw_cel

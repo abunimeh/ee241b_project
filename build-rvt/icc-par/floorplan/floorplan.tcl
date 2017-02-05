@@ -23,7 +23,8 @@ add_row \
   -within [get_attr [get_core_area] bbox] \
   -direction horizontal \
   -flip_first_row \
-  -tile_name unit
+  -tile_name unit \
+  -bottom_offset 0.2
 
 # create initial placement
 create_fp_placement
@@ -58,16 +59,22 @@ insert_stdcell_filler   \
         -connect_to_power {VDD} \
         -connect_to_ground {VSS}
 
+set_preroute_drc_strategy \
+  -min_layer M2 \
+  -max_layer M5
+
 # preroute standard cell rails
 preroute_standard_cells \
-  -within [get_attribute [get_core_area] bbox] \
+  -nets {VDD VSS} \
+  -route_pins_on_layer M1 \
   -connect horizontal     \
   -port_filter_mode off   \
   -cell_master_filter_mode off    \
   -cell_instance_filter_mode off  \
   -voltage_area_filter_mode off \
   -do_not_route_over_macros \
-  -no_routing_outside_working_area \
+  #-no_routing_outside_working_area \
+  #-within [get_attribute [get_core_area] bbox] \
 
 # get rid of filler cells
 remove_stdcell_filler -stdcell
