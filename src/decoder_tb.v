@@ -10,6 +10,7 @@ module decoder_tb();
   wire [31:0] Z;
   reg clk = 0;
   integer cycle = 0;
+  integer i;
 
   always #(`CLOCK_PERIOD * 0.5)  clk = ~clk;
   
@@ -19,7 +20,7 @@ module decoder_tb();
     // Note: feeds in @ falling edge to allow for some 
     // gate propagation time
     $vcdpluson;
-    for (int i=0; i<32; i=i+1) begin
+    for (i=0; i<32; i=i+1) begin
       A <= i;
       #`CLOCK_PERIOD;
       cycle = cycle + 1;
