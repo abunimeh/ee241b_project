@@ -1,6 +1,6 @@
 module decoder(
   input [4:0] A,
-  output [31:0] Z,
+  output reg [31:0] Z,
   input clk
 );
 
