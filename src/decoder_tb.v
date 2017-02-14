@@ -1,4 +1,4 @@
-`timescale 1 ns /  100 ps
+`timescale 1 ns /  1 ps
 
 `define expect(nodeName, nodeVal, expVal, cycle) if (nodeVal !== expVal) begin \
   $display("\t ASSERTION ON %s FAILED @ CYCLE = %d, 0x%h != EXPECTED 0x%h", \
