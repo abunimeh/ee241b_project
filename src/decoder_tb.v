@@ -26,6 +26,7 @@ module decoder_tb();
       @(posedge clk);
       #0.001;
       A = i;
+      // Output should definitely be ready by falling edge
       @(negedge clk);
       `expect("Z", Z, 1 << (i-1), cycle)
     end
