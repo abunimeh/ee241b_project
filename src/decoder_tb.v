@@ -13,20 +13,20 @@ module decoder_tb();
   integer i;
 
   always #(`CLOCK_PERIOD * 0.5)  clk = ~clk;
+  always @(posedge clk) cycle = cycle + 1;
   
   decoder decoder_inst (.A(A), .Z(Z), .clk(clk));
 
   initial begin
-    // Note: feeds in @ falling edge to allow for some 
-    // gate propagation time
     $vcdpluson;
     // Extra cycles to flush out any initial X's
     repeat(4) @(posedge clk);	
     for (i=1; i<=32; i=i+1) begin
-      A = i;
       // Input + output events on clock rising edge
       @(posedge clk);
-      cycle = cycle + 1;
+      #0.001;
+      A = i;
+      @(negedge clk);
       `expect("Z", Z, 1 << (i-1), cycle)
     end
     $vcdplusoff;
