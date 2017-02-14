@@ -15,7 +15,7 @@ include ../Makefrag
 
 toplevel = decoder
 testharness = decoder_tb
-toplevelinst = decoder
+toplevelinst = decoder_inst
 
 
 #--------------------------------------------------------------------
