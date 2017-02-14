@@ -28,7 +28,7 @@ vsrcs = \
 
 toplevel = decoder
 testharness = decoder_tb
-toplevelinst = decoder
+toplevelinst = decoder_inst
 
 #--------------------------------------------------------------------
 # Build rules

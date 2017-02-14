@@ -14,7 +14,7 @@ module decoder_tb();
 
   always #(`CLOCK_PERIOD * 0.5)  clk = ~clk;
   
-  decoder decoder (.A(A), .Z(Z), .clk(clk));
+  decoder decoder_inst (.A(A), .Z(Z), .clk(clk));
 
   initial begin
     // Note: feeds in @ falling edge to allow for some 
