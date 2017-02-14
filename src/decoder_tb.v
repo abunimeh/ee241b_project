@@ -20,11 +20,14 @@ module decoder_tb();
     // Note: feeds in @ falling edge to allow for some 
     // gate propagation time
     $vcdpluson;
-    for (i=0; i<32; i=i+1) begin
-      A <= i;
-      #`CLOCK_PERIOD;
+    // Extra cycles to flush out any initial X's
+    repeat(4) @(posedge clk);	
+    for (i=1; i<=32; i=i+1) begin
+      A = i;
+      // Input + output events on clock rising edge
+      @(posedge clk);
       cycle = cycle + 1;
-      `expect("Z", Z, 1 << i, cycle)
+      `expect("Z", Z, 1 << (i-1), cycle)
     end
     $vcdplusoff;
     $display("\t **Ran through all test vectors**"); $finish;
