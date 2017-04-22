@@ -1,30 +1,23 @@
-module decoder(
-  input [4:0] A,
-  output reg [31:0] Z,
-  input clk
-);
+// Verilog
+// c17
+// Ninputs 5
+// Noutputs 2
+// NtotalGates 6
+// NAND2 6
 
-// NOTE: Testbench expects that the output Z is registered!
+module decoder (N1,N2,N3,N6,N7,N22,N23);
 
-// Only one output should ever be high.  For example,
-// Z[2] = !A[4] & !A[3] & !A[2] & A[1] & !A[0] of the previous clk cycle, etc
-// When Z[2] is high, Z[0], Z[1], Z[3] to Z[31] should all be low
+input N1,N2,N3,N6,N7;
 
-// Hint: a 2 to 1 mux looks like:
-// assign y = (sel) ? b : a;
-// Where y = b when sel is high; otherwise y = a
-// And you can replace "a" with a further condition
-// assign y = (sel1) ? c
-//          : (sel2) ? b
-//          : a ;
-// and sel1 can be a condition like:
-// A == 5'd0
-// OR: Since a 5 to 32 decoder using this approach requires a lot of copy + pasting,
-// I challenge you to come up with a shorter way to write the same thing ;)
+output N22,N23;
+
+wire N10,N11,N16,N19;
+
+nand NAND2_1 (N10, N1, N3);
+nand NAND2_2 (N11, N3, N6);
+nand NAND2_3 (N16, N2, N11);
+nand NAND2_4 (N19, N11, N7);
+nand NAND2_5 (N22, N10, N16);
+nand NAND2_6 (N23, N16, N19);
 
 endmodule
-
-
-
-
-
