@@ -68,10 +68,15 @@ os.mkdir(output_directory_path)
 print("Generating %d sequences, each with %d test vectors" % (num_sequences, num_vectors_per_sequence))
 
 leading_zeros = len(str(num_sequences-1))
+test_vector_file = open("%s/%s.txt" % (output_directory_path, output_directory_path), "w")
 for sequence_idx in range(0, num_sequences):
-    file_name = ("{0:0" + str(leading_zeros) + "}").format(sequence_idx)
-    sequence_file = open("%s/%s.txt" % (output_directory_path, file_name), "w")
+    sequence_file_name = ("{0:0" + str(leading_zeros) + "}").format(sequence_idx)
+    sequence_file_path = ("%s/%s.txt" % (output_directory_path, sequence_file_name) )
+    print sequence_file_path
+    sequence_file = open(sequence_file_path, "w")
     for vector_idx in range(0, num_vectors_per_sequence):
         vector_bits = bitarray.bitarray((np.random.randn(len(inputs)) > 0).tolist())
         sequence_file.write("%s\n" % vector_bits.to01())
     sequence_file.close()
+    test_vector_file.write("%s\n" % os.path.abspath(sequence_file_path))
+test_vector_file.close()
