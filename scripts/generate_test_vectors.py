@@ -14,10 +14,14 @@ Arguments:
 """
 import sys
 import re
+import shutil
+import os
+import numpy as np
+import bitarray
 
 verilog_file_path = sys.argv[1]
-num_sequences = sys.argv[2]
-num_vectors_per_sequence = sys.argv[3]
+num_sequences = int(sys.argv[2])
+num_vectors_per_sequence = int(sys.argv[3])
 output_directory_path = sys.argv[4]
 
 # Get a listing of the inputs for the circuit as described in the Verilog file
@@ -57,4 +61,17 @@ print("Num inputs: %d" % (len(inputs)))
 
 print("Creating output directory (or cleaning it if already exists) at path: %s" % (output_directory_path))
 
+if os.path.isdir(output_directory_path):
+    shutil.rmtree(output_directory_path)
+os.mkdir(output_directory_path)
 
+print("Generating %d sequences, each with %d test vectors" % (num_sequences, num_vectors_per_sequence))
+
+leading_zeros = len(str(num_sequences-1))
+for sequence_idx in range(0, num_sequences):
+    file_name = ("{0:0" + str(leading_zeros) + "}").format(sequence_idx)
+    sequence_file = open("%s/%s.txt" % (output_directory_path, file_name), "w")
+    for vector_idx in range(0, num_vectors_per_sequence):
+        vector_bits = bitarray.bitarray((np.random.randn(len(inputs)) > 0).tolist())
+        sequence_file.write("%s\n" % vector_bits.to01())
+    sequence_file.close()
