@@ -1,3 +1,8 @@
 *~
 generated-src
 generated-src-sram
+*.pyc
+input_test_vectors/
+src/*
+!src/bak/*
+build-rvt/MakePowerEstimation

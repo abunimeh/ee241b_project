@@ -8,6 +8,7 @@
 #
 
 include ../Makefrag
+include ../MakePowerEstimation
 
 default : all
 
@@ -23,9 +24,11 @@ basedir  = ../..
 # Verilog sources
 
 srcdir = $(basedir)/src
-vsrcs = \
-	$(srcdir)/decoder.v \
-	$(srcdir)/decoder_tb.v \
+#vsrcs = \
+#	$(srcdir)/c17.v \
+#	$(srcdir)/c17_tb.v \
+
+vsrcs = $(vcs_rtl_vsrcs)
 
 #--------------------------------------------------------------------
 # Build rules
