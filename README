@@ -1,0 +1,13 @@
+To use this repo:
+
+Prereqs:
+1. Python 2.6+
+2. Run 'pip install --user bitarray'
+
+1. Source the 'sourceme'
+2. ./runme.sh c17 100 10
+    - This will ask the runme.sh script to create 100 test sequences for the c17 circuit inside the iscas85_verilog folder that consist of 10 test vectors each. 
+    - The test vectors are stored in a created folder called input_test_vectors.
+    - The script will then automatically generate a testbench for c17
+    - Then VCS will be run and the output vectors for the input vectors are captured in the input_test_vectors folder.
+    - c17 can be replaced with any circuit
