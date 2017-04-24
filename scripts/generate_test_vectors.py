@@ -36,10 +36,10 @@ os.mkdir(output_directory_path)
 print("Generating %d sequences, each with %d test vectors" % (num_sequences, num_vectors_per_sequence))
 
 leading_zeros = len(str(num_sequences-1))
-test_vector_file = open("%s/%s.txt" % (output_directory_path, output_directory_path), "w")
+test_vector_file = open("%s/%s" % (output_directory_path, output_directory_path), "w")
 for sequence_idx in range(0, num_sequences):
     sequence_file_name = ("{0:0" + str(leading_zeros) + "}").format(sequence_idx)
-    sequence_file_path = ("%s/%s.txt" % (output_directory_path, sequence_file_name) )
+    sequence_file_path = ("%s/%s" % (output_directory_path, sequence_file_name) )
     print sequence_file_path
     sequence_file = open(sequence_file_path, "w")
     for vector_idx in range(0, num_vectors_per_sequence):
