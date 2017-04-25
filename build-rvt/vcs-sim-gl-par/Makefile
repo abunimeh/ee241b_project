@@ -84,7 +84,7 @@ convert_saif = vcdplus.saif
 
 $(convert_saif): %.saif: %.vpd
 	vpd2vcd $(patsubst %.saif,%.vpd,$@) $(patsubst %.saif, %.vcd, $@)
-	vcd2saif -input $(patsubst %.saif, %.vcd, $@) -output $@
+	/home/ff/ee241/tools/icc/bin/vcd2saif -input $(patsubst %.saif, %.vcd, $@) -output $@
 	date > timestamp
 
 convert: $(convert_saif)
