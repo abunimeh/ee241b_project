@@ -75,7 +75,7 @@ if {[info exists PARASITIC_PATHS] && [info exists PARASITIC_FILES]} {
 if {[info exists CONSTRAINT_FILES]} {
   foreach constraint_file $CONSTRAINT_FILES {
     if {[file extension $constraint_file] eq ".sdc"} {
-      read_sdc -echo $constraint_file
+      read_sdc -echo $constraint_file -version 1.7
     } else {
       source -echo $constraint_file
     }
@@ -103,7 +103,7 @@ check_timing -verbose > $REPORTS_DIR/$PT_EXEC.ct.$REPORTS_SUFFIX.report
 #    Report_timing Section                                       #
 ##################################################################
 
-report_timing -slack_lesser_than 0.0 -delay min_max -nosplit -input -net -sign 4 > $REPORTS_DIR/$PT_EXEC.timing.$REPORTS_SUFFIX.report
+report_timing -justify -slack_lesser_than 0.0 -delay min_max -nosplit -input -net -sign 4 > $REPORTS_DIR/$PT_EXEC.timing.$REPORTS_SUFFIX.report
 report_clock -skew -attribute > $REPORTS_DIR/$PT_EXEC.clock.$REPORTS_SUFFIX.report
 report_analysis_coverage > $REPORTS_DIR/$PT_EXEC.converage.$REPORTS_SUFFIX.report
 

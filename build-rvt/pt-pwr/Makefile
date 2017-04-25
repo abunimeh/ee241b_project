@@ -11,16 +11,20 @@ default: all
 basedir  = ../..
 refdir = $(basedir)/../ref
 include ../Makefrag
-
+include ../MakePowerEstimation
 #--------------------------------------------------------------------
 # Sources
 #--------------------------------------------------------------------
 
 # Specify what the toplevel verilog module is
 
-toplevel = medianFilter
-testharness = medianFilterTestHarness_rtl
-toplevelinst = median_filter
+toplevel = $(pt_toplevel)
+testharness = $(pt_testharness)
+toplevelinst = $(pt_toplevelinst)
+
+#toplevel = decoder
+#testharness = decoder_tb
+#toplevelinst = DUT0
 
 #--------------------------------------------------------------------
 # Build rules

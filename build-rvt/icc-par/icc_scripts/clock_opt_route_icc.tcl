@@ -42,8 +42,8 @@ if { [check_error -verbose] != 0} { echo "SCRIPT-Error, flagging ..." }
 ##################################
 #       CLOCK ROUTING            #
 ##################################
-set_delay_calculation -clock_arnoldi
-route_zrt_group -all_clock_nets -reuse_existing_global_route true
+#set_delay_calculation -clock_arnoldi
+#route_zrt_group -all_clock_nets -reuse_existing_global_route true
 
 if { [check_error -verbose] != 0} { echo "SCRIPT-Error, flagging ..." }
 if {$ICC_POST_CLOCK_ROUTE_CTO} {

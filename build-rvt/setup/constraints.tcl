@@ -4,10 +4,10 @@
 create_clock clk -name ideal_clock1 -period ${CLOCK_PERIOD}
 
 # Load cap in fF
-set_load -pin_load 30.0 [all_outputs]
+set_load -pin_load 0.01 [all_outputs]
 
 # set drive strength for inputs
-set_driving_cell -lib_cell INVX0_RVT [all_inputs]
+set_driving_cell -lib_cell INVX1_RVT [all_inputs]
 
 # Set timing contraints for the input and output I/O ports
 set_input_delay -clock ideal_clock1  0 [all_inputs]

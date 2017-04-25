@@ -8,7 +8,7 @@
 #
 
 include ../Makefrag
-
+include ../MakePowerEstimation
 default : all
 
 basedir  = ../..
@@ -28,15 +28,16 @@ vclibsrcs = \
 	$(vclibdir)/vcTestSink.v \
 
 # Specify what the toplevel verilog module is
-
-toplevel = decoder
+toplevel = $(vcs_par_toplevel)
+#toplevel = decoder
 
 # Verilog sources
 
 srcdir = $(basedir)/src
-vsrcs = \
-	$(srcdir)/decoder_tb.v \
-	../icc-par/current-icc/results/$(toplevel).output.v \
+vsrcs = $(vcs_par_vsrcs)
+#vsrcs = \
+#	$(srcdir)/decoder_tb.v \
+#	../icc-par/current-icc/results/$(toplevel).output.v \
 
 #--------------------------------------------------------------------
 # Build rules
@@ -48,7 +49,7 @@ VCS      = vcs -full64
 VCS_OPTS = -notice -PP -line +lint=all,noVCDE,noTFIPC,noIWU,noOUDPE +v2k -timescale=1ns/1ps \
 	-P ../icc-par/current-icc/access.tab -debug \
 	+neg_tchk +sdfverbose \
-	-sdf typ:$(toplevel):../icc-par/current-icc/results/$(toplevel).output.corrected.sdf \
+	-sdf typ:$(toplevel):../icc-par/current-icc/results/$(toplevel).output.sdf \
 
 
 #--------------------------------------------------------------------

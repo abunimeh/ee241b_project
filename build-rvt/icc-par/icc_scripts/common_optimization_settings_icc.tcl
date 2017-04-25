@@ -54,33 +54,33 @@ if {[all_macro_cells] != "" } {
 ## To reset power options to default to override what is stored in Milkyway database
 #  set_power_options -default
 
-if {$ICC_CTS_CLOCK_GATE_MERGE} {
- set_power_options -clock_gating true
-} else {
- set_power_options -clock_gating false
-}
-
-if {$ICC_LOW_POWER_PLACEMENT} {
-  set_power_options -low_power_placement true
-} else {
-  set_power_options -low_power_placement false
-}
-
-if {$LEAKAGE_POWER} {
-## Turn on leakage
-  set_power_options -leakage true
-} else {
-## Turn off leakage
-  set_power_options -leakage false
-}
-
-if {$DYNAMIC_POWER} {
-## Dynamic power opto throughout the flow
-  set_power_options -dynamic true
-} else {
-## No dynamic power opto
-  set_power_options -dynamic false
-}
+#if {$ICC_CTS_CLOCK_GATE_MERGE} {
+# set_power_options -clock_gating true
+#} else {
+# set_power_options -clock_gating false
+#}
+#
+#if {$ICC_LOW_POWER_PLACEMENT} {
+#  set_power_options -low_power_placement true
+#} else {
+#  set_power_options -low_power_placement false
+#}
+#
+#if {$LEAKAGE_POWER} {
+### Turn on leakage
+#  set_power_options -leakage true
+#} else {
+### Turn off leakage
+#  set_power_options -leakage false
+#}
+#
+#if {$DYNAMIC_POWER} {
+### Dynamic power opto throughout the flow
+#  set_power_options -dynamic true
+#} else {
+### No dynamic power opto
+#  set_power_options -dynamic false
+#}
 
 ## End of Common Optimization Session Options
 

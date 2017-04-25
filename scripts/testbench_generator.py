@@ -57,7 +57,8 @@ with open(output_testbench_path, "w") as tb_file:
     # Create the testvector's looping integer, the file pointer and the initial block
     tb_file.write("\tinteger i;\n\tinteger f;\n\n")
     tb_file.write("\tinitial begin\n")
-    
+    tb_file.write("\t$vcdpluson;\n")    
+
     with open(test_sequences_file_path, "r") as test_sequences_file:
         for sequence_file in test_sequences_file:
             sequence_file = sequence_file.strip()
@@ -70,6 +71,7 @@ with open(output_testbench_path, "w") as tb_file:
             tb_file.write('\t\t\t$fwrite(f, "%b\\n", dut_output);\n')
             tb_file.write('\t\tend\n')
             tb_file.write('\t\t$fclose(f);\n\n')
+    tb_file.write("\t\t$vcdplusoff;")
     tb_file.write("\t\t$finish();\n")
     tb_file.write("\tend\n")
     tb_file.write("endmodule\n")

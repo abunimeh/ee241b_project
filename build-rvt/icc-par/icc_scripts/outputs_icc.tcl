@@ -45,11 +45,13 @@ open_mw_cel change_names_icc
 ##Verilog
 write_verilog -diode_ports -no_physical_only_cells $RESULTS_DIR/$DESIGN_NAME.output.v
 
+# Zimmer
+
 ## For comparison with a Design Compiler netlist,the option -diode_ports is removed
 #write_verilog -no_physical_only_cells $RESULTS_DIR/$DESIGN_NAME.output.dc.v
 
 ## For LVS use,the option -no_physical_only_cells is removed
-#write_verilog -diode_ports -pg $RESULTS_DIR/$DESIGN_NAME.output.pg.lvs.v
+write_verilog -diode_ports -pg $RESULTS_DIR/$DESIGN_NAME.output.pg.lvs.v
 
 ## For Prime Time use,to include DCAP cells for leakage power analysis,add the option -force_output_references
 #  write_verilog -diode_ports -no_physical_only_cells -force_output_references [list of your DCAP cells] \
@@ -62,7 +64,7 @@ write_sdf $RESULTS_DIR/$DESIGN_NAME.output.sdf
 set_app_var write_sdc_output_lumped_net_capacitance false
 set_app_var write_sdc_output_net_resistance false
 
-write_sdc $RESULTS_DIR/$DESIGN_NAME.output.sdc
+write_sdc $RESULTS_DIR/$DESIGN_NAME.output.sdc -version 1.7
 
 extract_rc -coupling_cap
 #write_parasitics  -format SPEF -output $RESULTS_DIR/$DESIGN_NAME.output.spef
@@ -75,14 +77,16 @@ source find_regs.tcl
 find_regs ${STRIP_PATH}
 
 ###GDSII
+# Zimmer
 ##Set options - usually also include a mapping file (-map_layer)
-##  set_write_stream_options \
-#	-child_depth 99 \
-#       -output_filling fill \
-#       -output_outdated_fill \
-#       -output_pin geometry \
-#       -keep_data_type
-#   write_stream -lib_name $MW_DESIGN_LIBRARY -format gds $RESULTS_DIR/$DESIGN_NAME.gds
+set_write_stream_options \
+	-child_depth 99 \
+       -output_filling fill \
+       -output_outdated_fill \
+       -output_pin {text geometry} \
+       -keep_data_type \
+       -map_layer mapfile
+write_stream -lib_name $MW_DESIGN_LIBRARY -format gds $RESULTS_DIR/$DESIGN_NAME.gds
 
 ## Since C-2009.06, in case of MCMM, all scenarios are made active during ILM creation.
 ## No need to do this anymore separately

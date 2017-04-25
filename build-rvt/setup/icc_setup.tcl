@@ -60,7 +60,7 @@ set ADD_METAL_FILL                "ICC"        ;# NONE|ICC|HERCULES|ICV; will st
 set PLACE_OPT_EFFORT 		 ${PNR_EFFORT}      ;# low|medium|high; choose effort level for place_opt command
 # YUNSUP: changed for fast p&r
 set ROUTE_OPT_EFFORT 		 ${PNR_EFFORT}      ;# low|medium|high; choose effort level for route_opt command
-set PLACE_OPT_CONGESTION         FALSE          ;# TRUE|FALSE; set TRUE to enable congestion removal during place_opt
+set PLACE_OPT_CONGESTION         TRUE          ;# TRUE|FALSE; set TRUE to enable congestion removal during place_opt
 
 ###############################
 ## Cellname variables

@@ -9,11 +9,10 @@
 
 include ../Makefrag
 include ../MakePowerEstimation
-
 default : all
 
-#basedir  = ../..
-basedir = $(vcs_rtl_basedir)
+basedir  = ../..
+
 #--------------------------------------------------------------------
 # Sources
 #--------------------------------------------------------------------
@@ -23,13 +22,11 @@ basedir = $(vcs_rtl_basedir)
 
 # Verilog sources
 
-#srcdir = $(basedir)/src
-srcdir = $(vcs_rtl_srcdir)
-#vsrcs = \
-#	$(srcdir)/c17.v \
-#	$(srcdir)/c17_tb.v \
-
+srcdir = $(basedir)/src
 vsrcs = $(vcs_rtl_vsrcs)
+#vsrcs = \
+#	$(srcdir)/decoder.v \
+#	$(srcdir)/decoder_tb.v \
 
 #--------------------------------------------------------------------
 # Build rules

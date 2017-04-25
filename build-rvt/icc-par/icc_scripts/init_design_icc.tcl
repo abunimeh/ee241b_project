@@ -248,8 +248,8 @@ source common_placement_settings_icc.tcl
  if {[file exists [which $CUSTOM_CONNECT_PG_NETS_SCRIPT]]} {
    source $CUSTOM_CONNECT_PG_NETS_SCRIPT
  } else {
-    derive_pg_connection -power_net $MW_POWER_NET -power_pin $MW_POWER_PORT -ground_net $MW_GROUND_NET -ground_pin $MW_GROUND_PORT
-    if {!$ICC_TIE_CELL_FLOW} {derive_pg_connection -power_net $MW_POWER_NET -ground_net $MW_GROUND_NET -tie}
+    #derive_pg_connection -power_net $MW_POWER_NET -power_pin $MW_POWER_PORT -ground_net $MW_GROUND_NET -ground_pin $MW_GROUND_PORT
+    #if {!$ICC_TIE_CELL_FLOW} {derive_pg_connection -power_net $MW_POWER_NET -ground_net $MW_GROUND_NET -tie}
    }
 
 save_mw_cel -as $ICC_FLOORPLAN_CEL

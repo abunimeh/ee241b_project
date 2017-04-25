@@ -38,7 +38,7 @@ set_app_var cts_instance_name_prefix CTS
 #set_rp_group_options [all_rp_groups] -cts_option "size_only"
 
 
-set_delay_calculation -clock_arnoldi
+#set_delay_calculation -clock_arnoldi
 
 
 if {$ICC_CTS_CLOCK_GATE_SPLIT} {
@@ -61,7 +61,7 @@ if {$ICC_CTS_CLOCK_GATE_MERGE || $ICC_CTS_CLOCK_GATE_SPLIT || $ICC_LOW_POWER_PLA
 if {$ICC_CTS_INTERCLOCK_BALANCING && [file exists [which $ICC_CTS_INTERCLOCK_BALANCING_OPTIONS_FILE]]} {lappend clock_opt_cts_cmd -inter_clock_balance}
 if {$ICC_CTS_UPDATE_LATENCY} {lappend clock_opt_cts_cmd -update_clock_latency}
 echo $clock_opt_cts_cmd
-eval $clock_opt_cts_cmd
+#eval $clock_opt_cts_cmd
 
 if {$ICC_ENABLE_CHECKPOINT} {set_checkpoint_strategy -disable}
 

@@ -75,7 +75,7 @@ if {[info exists PARASITIC_PATHS] && [info exists PARASITIC_FILES]} {
 if {[info exists CONSTRAINT_FILES]} {
   foreach constraint_file $CONSTRAINT_FILES {
     if {[file extension $constraint_file] eq ".sdc"} {
-      read_sdc -echo $constraint_file
+      read_sdc -echo $constraint_file -version 1.7
     } else {
       source -echo $constraint_file
     }

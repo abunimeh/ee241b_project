@@ -1,1 +1,4 @@
 source ~ee241/tutorials/ee241.bashrc
+export PT_HOME=/home/ff/cs250/tools/synopsys/pt/current
+export PT_PATH=$PT_HOME/bin
+export PATH=/home/ff/cs250/tools/synopsys/pt/current/bin:$PATH

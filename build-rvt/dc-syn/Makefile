@@ -22,17 +22,17 @@ include ../MakePowerEstimation
 srcdir = $(basedir)/src
 vsrcs = $(dc_syn_vsrcs)
 #vsrcs = \
-#	$(srcdir)/decoder.v \
-#	$(srcdir)/decoder_tb.v \
+	$(srcdir)/decoder.v \
 
+	#$(srcdir)/decoder_tb.v \
 # Specify what the toplevel verilog module is
 
-#toplevel = decoder
 toplevel = $(dc_syn_toplevel)
-#testharness = decoder_tb
 testharness = $(dc_syn_testharness)
-#toplevelinst = decoder_inst
 toplevelinst = $(dc_syn_toplevelinst)
+#toplevel = decoder
+#testharness = decoder_tb
+#toplevelinst = decoder
 
 #--------------------------------------------------------------------
 # Build rules
@@ -75,7 +75,7 @@ vars = \
 	set MAP_FILE                    "$(techfile_dir)/tech2itf.map";\n \
 	set TLUPLUS_MAX_FILE            "$(tluplus_dir)/max.tluplus";\n \
 	set TLUPLUS_MIN_FILE            "$(tluplus_dir)/min.tluplus";\n \
-	set ALIB_DIR                    "$(UCB_VLSI_HOME)/stdcells/synopsys-32nm/multi_vt/alib";\n \
+	set ALIB_DIR                    "../alib";\n \
 	set RTL_SOURCE_FILES            "$(notdir $(vsrcs))";\n \
 	set DCRM_CONSTRAINTS_INPUT_FILE "constraints.tcl";\n \
 	set REPORTS_DIR                 "$(reports_dir)";\n \
@@ -86,6 +86,7 @@ vars = \
 	set OUTPUT_DELAY                "$(output_delay)";\n \
 
 define new-build-dir-cmds
+	rsync -azvr --exclude *backup $(UCB_VLSI_HOME)/stdcells/synopsys-32nm/multi_vt/alib .
 	mkdir $(build_dc_dir)
 	rm -f $(cur_build_dc_dir)
 	ln -s $(build_dc_dir) $(cur_build_dc_dir)

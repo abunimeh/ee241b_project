@@ -6,16 +6,18 @@
 default: all
 basedir  = ../..
 include ../Makefrag
-
+include ../MakePowerEstimation
 #--------------------------------------------------------------------
 # Sources
 #--------------------------------------------------------------------
 
 # Specify what the toplevel verilog module is
-
-toplevel = decoder
-testharness = decoder_tb
-toplevelinst = decoder_inst
+toplevel = $(icc_par_toplevel)
+testharness = $(icc_par_testharness)
+toplevelinst = $(icc_par_toplevelinst)
+#toplevel = decoder
+#testharness = decoder_tb
+#toplevelinst = decoder
 
 
 #--------------------------------------------------------------------
@@ -55,7 +57,7 @@ chip_finish_icc         := $(cur_build_icc_dir)/chip_finish_icc
 outputs_icc             := $(cur_build_icc_dir)/outputs_icc
 ic                      := $(cur_build_icc_dir)/ic
 
-vars_tcl                := setup/common_setup.tcl setup/icc_setup.tcl icc_scripts/check_icc_rm_values.tcl
+vars_tcl                := setup/common_setup.tcl setup/icc_setup.tcl icc_scripts/check_icc_rm_values.tcl icc_scripts/mapfile
 makegen_tcl             := make_generated_vars.tcl
 floorplan_tcl           := floorplan/floorplan.tcl floorplan/saed_32nm.tpl
 
@@ -210,7 +212,6 @@ $(outputs_icc): $(icc_timestamp) $(chip_finish_icc)
 	cd $(cur_build_icc_dir); \
 	mkdir -p $(reports_dir) $(results_dir) $(log_dir); \
 	$(icc_exec) -f $(notdir $(outputs_icc_tcl)) | tee -i $(log_dir)/$(notdir $(outputs_icc)).log; \
-	sdfcorrect.py results/$(toplevel).output.sdf results/$(toplevel).output.corrected.sdf \
 	date > $(notdir $(outputs_icc))
 
 $(ic): $(icc_timestamp) $(outputs_icc)

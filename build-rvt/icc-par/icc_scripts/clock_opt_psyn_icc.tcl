@@ -72,7 +72,7 @@ eval $clock_opt_psyn_cmd
 
 if {$ICC_ENABLE_CHECKPOINT} {set_checkpoint_strategy -disable}
 
-route_zrt_group -all_clock_nets -reuse_existing_global_route true -stop_after_global_route true
+#route_zrt_group -all_clock_nets -reuse_existing_global_route true -stop_after_global_route true
 if { [check_error -verbose] != 0} { echo "SCRIPT-Error, flagging ..." }
 ############################################################################################################
 # ADDITIONAL FEATURES FOR THE POST CTS OPTIMIZATION
