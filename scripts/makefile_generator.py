@@ -21,3 +21,22 @@ with open(output_makefrag_path, "w") as makefrag_file:
     makefrag_file.write("vcs_rtl_vsrcs = \\\n")
     makefrag_file.write("   $(vcs_rtl_srcdir)/%s.v \\\n" % (verilog_file_name))
     makefrag_file.write("   $(vcs_rtl_srcdir)/%s_tb.v \\\n" % (verilog_file_name))
+
+    makefrag_file.write("\n")
+
+    makefrag_file.write("vcs_syn_basedir = ../..\n")
+    makefrag_file.write("vcs_syn_srcdir = $(vcs_syn_basedir)/src\n")
+    makefrag_file.write("vcs_syn_toplevel = %s\n" % (verilog_file_name))
+    makefrag_file.write("vcs_syn_vsrcs = \\\n")
+    makefrag_file.write("   $(vcs_syn_srcdir)/%s_tb.v \\\n" % (verilog_file_name))
+    makefrag_file.write("   ../dc-syn/current-dc/results/$(vcs_syn_toplevel).mapped.v \\\n")
+
+    makefrag_file.write("\n")
+
+    makefrag_file.write("dc_syn_toplevel = %s\n" % (verilog_file_name))
+    makefrag_file.write("dc_syn_testharness = %s_tb\n" % (verilog_file_name))
+    makefrag_file.write("dc_syn_toplevelinst = %s_inst\n" % (verilog_file_name))
+    makefrag_file.write("dc_syn_vsrcs = \\\n")
+    makefrag_file.write("   $(srcdir)/%s.v \\\n" % (verilog_file_name))
+    makefrag_file.write("   $(srcdir)/%s_tb.v \\\n" % (verilog_file_name))
+

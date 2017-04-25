@@ -12,8 +12,8 @@ include ../MakePowerEstimation
 
 default : all
 
-basedir  = ../..
-
+#basedir  = ../..
+basedir = $(vcs_rtl_basedir)
 #--------------------------------------------------------------------
 # Sources
 #--------------------------------------------------------------------
@@ -23,7 +23,8 @@ basedir  = ../..
 
 # Verilog sources
 
-srcdir = $(basedir)/src
+#srcdir = $(basedir)/src
+srcdir = $(vcs_rtl_srcdir)
 #vsrcs = \
 #	$(srcdir)/c17.v \
 #	$(srcdir)/c17_tb.v \

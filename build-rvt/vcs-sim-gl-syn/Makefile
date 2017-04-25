@@ -8,10 +8,11 @@
 #
 
 include ../Makefrag
+include ../MakePowerEstimation
 
 default : all
-
-basedir  = ../..
+basedir = $(vcs_syn_basedir)
+#basedir  = ../..
 
 #--------------------------------------------------------------------
 # Sources
@@ -28,15 +29,17 @@ vclibsrcs = \
 	$(vclibdir)/vcTestSink.v \
 
 # Specify what the toplevel verilog module is
-
-toplevel = decoder
+toplevel = $(vcs_syn_toplevel)
+#toplevel = decoder
 
 # Verilog sources
 
-srcdir = $(basedir)/src
-vsrcs = \
-	$(srcdir)/decoder_tb.v \
-	../dc-syn/current-dc/results/$(toplevel).mapped.v \
+#srcdir = $(basedir)/src
+srcdir = $(vcs_syn_srcdir)
+vsrcs = $(vcs_syn_vsrcs)
+#vsrcs = \
+#	$(srcdir)/decoder_tb.v \
+#	../dc-syn/current-dc/results/$(toplevel).mapped.v \
 
 #--------------------------------------------------------------------
 # Build rules

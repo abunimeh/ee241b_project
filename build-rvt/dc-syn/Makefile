@@ -12,7 +12,7 @@
 default: all
 basedir  = ../..
 include ../Makefrag
-
+include ../MakePowerEstimation
 #--------------------------------------------------------------------
 # Sources
 #--------------------------------------------------------------------
@@ -20,15 +20,19 @@ include ../Makefrag
 # Verilog sources (do not include test harness!)
 
 srcdir = $(basedir)/src
-vsrcs = \
-	$(srcdir)/decoder.v \
-	$(srcdir)/decoder_tb.v \
+vsrcs = $(dc_syn_vsrcs)
+#vsrcs = \
+#	$(srcdir)/decoder.v \
+#	$(srcdir)/decoder_tb.v \
 
 # Specify what the toplevel verilog module is
 
-toplevel = decoder
-testharness = decoder_tb
-toplevelinst = decoder_inst
+#toplevel = decoder
+toplevel = $(dc_syn_toplevel)
+#testharness = decoder_tb
+testharness = $(dc_syn_testharness)
+#toplevelinst = decoder_inst
+toplevelinst = $(dc_syn_toplevelinst)
 
 #--------------------------------------------------------------------
 # Build rules
