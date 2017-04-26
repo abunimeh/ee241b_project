@@ -2,6 +2,7 @@
 Given a sequence input and sequence output file, this script will compute the 
 statistics for the 4D table (Pin, Din, SCin, Dout)
 """
+import sys
 from bitarray import bitarray
 def compute_statistics(input_sequence_file, output_sequence_file):
     input_vectors = []
@@ -42,16 +43,13 @@ def compute_statistics(input_sequence_file, output_sequence_file):
     scin_total = 0.0
     for bit_idx1 in range(0, num_inputs):
         for bit_idx2 in range(bit_idx1 + 1, num_inputs):
+            temp_sum = 0.0
             for time_idx in range(0, len(input_vectors)):
-                temp_sum = 0.0
                 vec = input_vectors[time_idx]
-                if vec[bit_idx1] and vec[bit_idx2]:
+                if (vec[bit_idx1] == True) and (vec[bit_idx2] == True):
                     temp_sum = temp_sum + 1
-                print temp_sum
-            scin_total = scin_total + (temp_sum / float(len(input_vectors)))
-    SCin = scin_total / (0.5 * num_inputs * (num_inputs-1))
+            scin_total = scin_total + (float(temp_sum) / float(len(input_vectors)))
+    SCin = scin_total * (2.0 / (num_inputs * (num_inputs-1)))
     
-    print input_vectors
-    print output_vectors
-    print (Pin, Din, SCin, Dout)
-compute_statistics('../c17_training_vectors/003', '../c17_training_vectors/003_out')
+    return (Pin, Din, SCin, Dout)
+compute_statistics('../c17_training_vectors/%s' % sys.argv[1], '../c17_training_vectors/%s_out' % sys.argv[1])
