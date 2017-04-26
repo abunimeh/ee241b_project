@@ -51,9 +51,9 @@ class VerilogParser(object):
         print("Created VerilogParser to parse Verilog file at path: %s" % (self.verilog_file_path))
         self.inputs = self.parseForString('input')
         self.outputs = self.parseForString('output')
-        self.moduleName = self.findModuleName()
+        self.module_name = self.findModuleName()
 
-        print("Parsed Verilog module name: %s" % (self.moduleName))
+        print("Parsed Verilog module name: %s" % (self.module_name))
 
         print("Found these inputs to the Verilog module: %s" % (self.inputs))
         print("Num inputs: %d" % (len(self.inputs)))

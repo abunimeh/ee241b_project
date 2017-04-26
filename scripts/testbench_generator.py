@@ -71,7 +71,7 @@ with open(output_testbench_path, "w") as tb_file:
             tb_file.write('\t\t\t$fwrite(f, "%b\\n", dut_output);\n')
             tb_file.write('\t\tend\n')
             tb_file.write('\t\t$fclose(f);\n\n')
-    tb_file.write("\t\t$vcdplusoff;")
+    tb_file.write("\t\t$vcdplusoff;\n")
     tb_file.write("\t\t$finish();\n")
     tb_file.write("\tend\n")
     tb_file.write("endmodule\n")
