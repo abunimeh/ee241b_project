@@ -1,17 +1,9 @@
-#!/bin/bash
-"""
-
-python scripts/makefile_generator.py $module_name build-rvt/MakePowerEstimation
-cd build-rvt/vcs-sim-rtl/
-make clean
-make
-make run
-"""
 import sys
 import shutil
 import os
 import numpy as np
 import bitarray
+import subprocess
 # Custom imports
 from verilog_parser import VerilogParser
 import util
@@ -33,6 +25,8 @@ num_vectors_per_sequence = int(sys.argv[3])
 working_directory = os.path.abspath('../training_vectors/')
 verilog_module_sources_directory = os.path.abspath('../iscas85_verilog/')
 flow_sources_directory = os.path.abspath('../src/')
+build_directory = os.path.abspath('../build-rvt/')
+rtl_sim_directory = os.path.abspath('../build-rvt/vcs-sim-rtl/')
 
 # Create working directory
 print("Creating directory for test sequences to reside in at path: %s" % (os.path.abspath(working_directory)))
@@ -84,3 +78,18 @@ util.generate_testbench(
         sequence_paths = sequence_paths,
         vectors_per_sequence = num_vectors_per_sequence,
         output_testbench_path = testbench_path) 
+
+# Generate Makefrag
+makefrag_path = '%s/MakePowerEstimation' % (build_directory)
+print("Generating MakePowerEstimation at path %s" % (makefrag_path))
+util.generate_makefrag(
+        module_name = parser.module_name,
+        output_makefrag_path = makefrag_path)
+
+# Run RTL testbench using VCS
+subprocess.check_call(['cd %s && make clean' % (rtl_sim_directory)], shell = True)
+subprocess.check_call(['cd %s && make' % (rtl_sim_directory)], shell = True)
+subprocess.check_call(['cd %s && make run' % (rtl_sim_directory)], shell = True)
+
+# Ask user if we should build the IC (synthesis + PAR). It is probably better that
+# the user does this manually than through a script.

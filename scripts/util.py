@@ -81,3 +81,43 @@ def generate_testbench(inputs, outputs, module_name, vectors_per_sequence, seque
         tb_file.write("\t\t$finish();\n")
         tb_file.write("\tend\n")
         tb_file.write("endmodule\n")
+
+def generate_makefrag(module_name, output_makefrag_path):
+    with open(output_makefrag_path, "w") as makefrag_file:
+        makefrag_file.write("vcs_rtl_vsrcs = \\\n")
+        makefrag_file.write("   $(srcdir)/%s.v \\\n" % (module_name))
+        makefrag_file.write("   $(srcdir)/%s_tb.v \\\n" % (module_name))
+
+        makefrag_file.write("\n")
+
+        makefrag_file.write("vcs_syn_toplevel = %s\n" % (module_name))
+        makefrag_file.write("vcs_syn_vsrcs = \\\n")
+        makefrag_file.write("   $(srcdir)/%s_tb.v \\\n" % (module_name))
+        makefrag_file.write("   ../dc-syn/current-dc/results/$(toplevel).mapped.v \\\n")
+
+        makefrag_file.write("\n")
+
+        makefrag_file.write("dc_syn_toplevel = %s\n" % (module_name))
+        makefrag_file.write("dc_syn_testharness = %s_tb\n" % (module_name))
+        makefrag_file.write("dc_syn_toplevelinst = %s_inst\n" % (module_name))
+        makefrag_file.write("dc_syn_vsrcs = \\\n")
+        makefrag_file.write("   $(srcdir)/%s.v \\\n" % (module_name))
+
+        makefrag_file.write("\n")
+
+        makefrag_file.write("icc_par_toplevel = %s\n" % (module_name))
+        makefrag_file.write("icc_par_testharness = %s_tb\n" % (module_name))
+        makefrag_file.write("icc_par_toplevelinst = %s_inst\n" % (module_name))
+
+        makefrag_file.write("\n")
+
+        makefrag_file.write("vcs_par_toplevel = %s\n" % (module_name))
+        makefrag_file.write("vcs_par_vsrcs = \\\n")
+        makefrag_file.write("   $(srcdir)/%s_tb.v \\\n" % (module_name))
+        makefrag_file.write("   ../icc-par/current-icc/results/$(toplevel).output.v \\\n")
+
+        makefrag_file.write("\n")
+
+        makefrag_file.write("pt_toplevel = %s\n" % (module_name))
+        makefrag_file.write("pt_testharness = %s_tb\n" % (module_name))
+        makefrag_file.write("pt_toplevelinst = %s_inst\n" % (module_name))
