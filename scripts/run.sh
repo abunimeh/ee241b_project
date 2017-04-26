@@ -1,0 +1,10 @@
+python gather_power_data.py c17 300 30 ../c17_training
+python gather_power_data.py c17 300 30 ../c17_testing
+python gather_power_data.py c432 300 30 ../c432_training
+python gather_power_data.py c432 300 30 ../c432_testing
+python gather_power_data.py c499 300 30 ../c499_training
+python gather_power_data.py c499 300 30 ../c499_testing
+python gather_power_data.py c880 300 30 ../c880_training
+python gather_power_data.py c880 300 30 ../c880_testing
+python gather_power_data.py c1908 300 30 ../c1908_training
+python gather_power_data.py c1908 300 30 ../c1908_testing

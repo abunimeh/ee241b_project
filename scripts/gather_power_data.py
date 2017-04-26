@@ -14,29 +14,34 @@ combinational circuit. This script must be provided with certain parameters.
 """
 
 # Parse command line arguments
-if (len(sys.argv) != 4):
-    print('Usage: python construct_power_model.py <Verilog module ' +  
-            'name> <Number of sequences> <Number of vectors per sequence>')
+if (len(sys.argv) != 5):
+    print('Usage: python gather_power_data.py <Verilog module ' +  
+            'name> <Number of sequences> <Number of vectors per sequence> ' +
+            '<working directory>')
     sys.exit(1)
 
 verilog_module_name = sys.argv[1]
 num_sequences = int(sys.argv[2])
 num_vectors_per_sequence = int(sys.argv[3])
-working_directory = os.path.abspath('../%s_training_vectors/' % (verilog_module_name))
+#working_directory = os.path.abspath('../%s_training_vectors/' % (verilog_module_name))
+working_directory = os.path.abspath(sys.argv[4])
 verilog_module_sources_directory = os.path.abspath('../iscas85_verilog/')
 flow_sources_directory = os.path.abspath('../src/')
 build_directory = os.path.abspath('../build-rvt/')
 rtl_sim_directory = os.path.abspath('../build-rvt/vcs-sim-rtl/')
 post_par_sim_directory = os.path.abspath('../build-rvt/vcs-sim-gl-par/')
 primetime_directory = os.path.abspath('../build-rvt/pt-pwr/')
+synthesis_directory = os.path.abspath('../build-rvt/dc-syn/')
+par_directory = os.path.abspath('../build-rvt/icc-par/')
 
 # Create working directory
 print("Creating directory for test sequences to reside in at path: %s" % (os.path.abspath(working_directory)))
-status = util.prompt(
-        message = 'Should this directory be wiped? [Y/N]',
-        errormessage = 'Enter a valid option',
-        isvalid = lambda s: len(s) > 0)
+#status = util.prompt(
+#        message = 'Should this directory be wiped? [Y/N]',
+#        errormessage = 'Enter a valid option',
+#        isvalid = lambda s: len(s) > 0)
 new_working_directory = False
+status = 'Y'
 if (status.upper() == 'Y'):
     if os.path.isdir(working_directory):
         shutil.rmtree(working_directory)
@@ -53,7 +58,7 @@ if new_working_directory:
     print("Generating %d sequences, each with %d test vectors" % (num_sequences, num_vectors_per_sequence))
     print("Sequence files are being placed in %s" % (working_directory))
     util.generate_sequences(num_sequences, num_vectors_per_sequence, working_directory, len(parser.inputs))
-
+    
     print("Removing all Verilog sources from flow directory: %s" % (flow_sources_directory))
     # Remove all Verilog sources from the flow sources directory
     for item in os.listdir(flow_sources_directory):
@@ -98,6 +103,11 @@ if new_working_directory:
 
 # Ask user if we should build the IC (synthesis + PAR). It is probably better that
 # the user does this manually than through a script.
+subprocess.check_call(['cd %s && make clean' % (synthesis_directory)], shell = True)
+subprocess.check_call(['cd %s && make' % (synthesis_directory)], shell = True)
+
+subprocess.check_call(['cd %s && make clean' % (par_directory)], shell = True)
+subprocess.check_call(['cd %s && make' % (par_directory)], shell = True)
 
 sequence_paths_filepath = '%s/sequences' % (working_directory) 
 print("Reading sequences paths file at path %s" % (sequence_paths_filepath))

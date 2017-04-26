@@ -21,18 +21,34 @@ def prompt(message, errormessage, isvalid):
 def generate_sequences(num_sequences, num_vectors_per_sequence, output_directory_path, num_module_inputs, print_file_creation = False):
     leading_zeros = len(str(num_sequences-1))
     sequence_paths_file = open("%s/sequences" % (output_directory_path), "w")
+    
+    # For every sequence ...
     for sequence_idx in range(0, num_sequences):
         sequence_file_name = ("{0:0" + str(leading_zeros) + "}").format(sequence_idx)
         sequence_file_path = ("%s/%s" % (output_directory_path, sequence_file_name) )
         if print_file_creation:
             print(sequence_file_path)
         sequence_file = open(sequence_file_path, "w")
-        for vector_idx in range(0, num_vectors_per_sequence):
-            vector_bits = bitarray.bitarray((np.random.randn(num_module_inputs) > 0).tolist())
-            sequence_file.write("%s\n" % vector_bits.to01())
+
+        # For num vectors per sequence ...
+        seq_bits = generate_single_sequence(sequence_idx, num_sequences, num_vectors_per_sequence, num_module_inputs)
+        for vector in seq_bits:
+            sequence_file.write("%s\n" % vector.to01())
+
         sequence_file.close()
         sequence_paths_file.write("%s\n" % os.path.abspath(sequence_file_path))
+    
     sequence_paths_file.close()
+
+def generate_single_sequence(sequence_num, total_sequences, num_vectors_per_sequence, num_inputs):
+    # Gradient of probability to generate an even Pin distribution (uniform)
+    bit_prob = float(sequence_num) / float(total_sequences)
+    sequence = []
+    for vector_idx in range(0, num_vectors_per_sequence):
+        vector_bits = bitarray.bitarray((np.random.rand(num_inputs) < bit_prob).tolist())
+        sequence.append(vector_bits)
+
+    return sequence
 
 def generate_testbench(inputs, outputs, module_name, vectors_per_sequence, sequence_paths, output_testbench_path):
     with open(output_testbench_path, "w") as tb_file:
