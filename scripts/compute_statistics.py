@@ -15,8 +15,6 @@ def compute_statistics(input_sequence_file, output_sequence_file):
             bits = bitarray(line.strip())
             output_vectors.append(bits)
 
-    print input_vectors
-    print output_vectors
     num_inputs = input_vectors[0].length()
     num_outputs = output_vectors[0].length()
 
@@ -39,5 +37,21 @@ def compute_statistics(input_sequence_file, output_sequence_file):
         transition_vector = output_vectors[idx-1] ^ output_vectors[idx]
         total_transition_density = total_transition_density + float(transition_vector.count(True)) / float(num_outputs)
     Dout = total_transition_density / float(len(output_vectors) - 1)
-    print (Pin, Din, Dout)
-compute_statistics('../c17_training_vectors/009', '../c17_training_vectors/003_out')
+
+    # Compute SCin (average input spatial correlation coefficient)
+    scin_total = 0.0
+    for bit_idx1 in range(0, num_inputs):
+        for bit_idx2 in range(bit_idx1 + 1, num_inputs):
+            for time_idx in range(0, len(input_vectors)):
+                temp_sum = 0.0
+                vec = input_vectors[time_idx]
+                if vec[bit_idx1] and vec[bit_idx2]:
+                    temp_sum = temp_sum + 1
+                print temp_sum
+            scin_total = scin_total + (temp_sum / float(len(input_vectors)))
+    SCin = scin_total / (0.5 * num_inputs * (num_inputs-1))
+    
+    print input_vectors
+    print output_vectors
+    print (Pin, Din, SCin, Dout)
+compute_statistics('../c17_training_vectors/003', '../c17_training_vectors/003_out')
