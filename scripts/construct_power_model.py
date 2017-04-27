@@ -6,6 +6,9 @@ will construct a power model, calculate its statistics, and export it.
 import sys
 from bitarray import bitarray
 import matplotlib.pyplot as plt
+import os
+import shutil
+import cPickle as pickle
 
 def main():
     # Parse command line arguments
@@ -13,25 +16,37 @@ def main():
         print('Usage: python construct_power_model.py <Sequences paths file> <output directory>')
         sys.exit(1)
 
-    sequences_paths_file = sys.argv[1]
-    output_directory = sys.argv[2]
+    sequences_paths_file = os.path.abspath(sys.argv[1])
+    output_directory = os.path.abspath(sys.argv[2])
+
+    print('Wiping or creating output directory: %s' % output_directory)
+    # Create output directory and wipe its contents if it already exists
+    if os.path.isdir(output_directory):
+        shutil.rmtree(output_directory)
+    os.mkdir(output_directory)
 
     sequence_paths = []
     with open(sequences_paths_file, 'r') as f:
         for sequence_path in f:
             sequence_paths.append(sequence_path.strip())
 
+    print('Computing power model from sequences file: %s' % sequences_paths_file)
     power_model = {}
     for sequence in sequence_paths:
         power = compute_power('%s_pt_power' % sequence)
-        power = None
         statistics = compute_statistics(sequence, '%s_out' % sequence)
         if statistics in power_model:
-            print 'special case'
+            print 'special case - multiple power numbers for same 4D tuple'
             power_model[statistics].append(power)
         else:
             power_model[statistics] = [power]
-    
+   
+    # Save power model as binary to be unpacked by the estimation script
+    power_model_binary_path = '%s/power_model' % output_directory
+    print('Saving power model to location: %s' % power_model_binary_path)
+    with open(power_model_binary_path, 'wb') as f:
+        pickle.dump(power_model, f, pickle.HIGHEST_PROTOCOL)
+
     # Compute histograms for every model statistic
     Pin = []
     Din = []
@@ -59,8 +74,9 @@ def main():
     plt.subplot(2,2,4)
     plt.hist(Dout)
     plt.title('Dout')
-    plt.savefig('Power_Model_Hists.png')
-    print power_model
+    histogram_output_path = '%s/Power_Model_Histogram.png' % output_directory
+    print('Saving 4D tuple distribution histogram to %s' % histogram_output_path)
+    plt.savefig(histogram_output_path)
 
 def compute_power(input_pt_file):
     contents = []

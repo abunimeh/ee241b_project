@@ -23,7 +23,6 @@ if (len(sys.argv) != 5):
 verilog_module_name = sys.argv[1]
 num_sequences = int(sys.argv[2])
 num_vectors_per_sequence = int(sys.argv[3])
-#working_directory = os.path.abspath('../%s_training_vectors/' % (verilog_module_name))
 working_directory = os.path.abspath(sys.argv[4])
 verilog_module_sources_directory = os.path.abspath('../iscas85_verilog/')
 flow_sources_directory = os.path.abspath('../src/')
