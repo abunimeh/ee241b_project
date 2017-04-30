@@ -14,12 +14,13 @@ import util
 
 def main():
     # Parse command line arguments
-    if (len(sys.argv) != 3):
-        print('Usage: python power_model_prediction.py <Sequences paths file> <power model binary path>')
+    if (len(sys.argv) != 4):
+        print('Usage: python power_model_prediction.py <Sequences paths file> <power model binary path> <output histogram path>')
         sys.exit(1)
 
     sequences_paths_file = os.path.abspath(sys.argv[1])
     power_model_binary_path = os.path.abspath(sys.argv[2])
+    output_directory = os.path.abspath(sys.argv[3])
 
     power_model = None
     print('Reading power model binary (pickled) from path %s' % power_model_binary_path)
@@ -52,36 +53,13 @@ def main():
         error = (pt_power - pred_power) / pt_power
         errors.append(error)
         print('seq: %03d, actual: %.10f, predicted: %.10f, error: %.4f' % (idx, pt_power, pred_power, error))
-    sys.exit(0)
-    # Compute histograms for every model statistic
-    Pin = []
-    Din = []
-    SCin = []
-    Dout = []
-    for entry in power_model:
-        Pin.append(entry[0])
-        Din.append(entry[1])
-        SCin.append(entry[2])
-        Dout.append(entry[3])
 
+    # Compute histograms for error statistics 
     fig = plt.figure()
-    plt.subplot(2,2,1)
-    plt.hist(Pin)
-    plt.title('Pin')
-
-    plt.subplot(2,2,2)
-    plt.hist(Din)
-    plt.title('Din')
-    
-    plt.subplot(2,2,3)
-    plt.hist(SCin)
-    plt.title('SCin')
-   
-    plt.subplot(2,2,4)
-    plt.hist(Dout)
-    plt.title('Dout')
-    histogram_output_path = '%s/Power_Model_Histogram.png' % output_directory
-    print('Saving 4D tuple distribution histogram to %s' % histogram_output_path)
+    plt.hist(errors)
+    plt.title('Error Distribution')
+    histogram_output_path = '%s/4D_Table_Error_Histogram.png' % output_directory
+    print('Saving 4D table error histogram to %s' % histogram_output_path)
     plt.savefig(histogram_output_path)
 
 if __name__ == "__main__":

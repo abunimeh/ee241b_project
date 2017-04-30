@@ -199,13 +199,17 @@ def compute_statistics(input_sequence_file, output_sequence_file):
     return (Pin, Din, SCin, Dout)
 
 def compute_power_estimate(power_model, sequence_statistics):
-    print power_model
     points = []
     values = []
     for statistics,power in power_model.iteritems():
-        points.append(statistics)
+        points.append(np.array(statistics))
         values.append(power)
-    print np.size(points)
-    print np.size(values)
-    power_estimate = griddata(points, values, sequence_statistics, method='linear')
-    return power_estimate
+    points = np.array(points)
+    values = np.array(values)
+    sequence_statistics = np.array(sequence_statistics)
+    power_estimate_nn = griddata(points, values, sequence_statistics, method='nearest')
+    power_estimate_linear = griddata(points, values, sequence_statistics, method='linear')
+    for idx in range(0, len(power_estimate_linear)):
+        if np.isnan(power_estimate_linear[idx]):
+            power_estimate_linear[idx] = power_estimate_nn[idx]
+    return power_estimate_linear
