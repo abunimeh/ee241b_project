@@ -241,7 +241,6 @@ def construct_quadratic_vector(statistics):
         quadratic_vector.append(statistics[i] * statistics[i])
     # Flatten the 2 vectors combined
     flat_vector = list(itertools.chain.from_iterable([linear_vector, quadratic_vector])) 
-    print flat_vector
     return flat_vector
 
 """
@@ -249,17 +248,21 @@ Given the 'statistics' for a particular sequence, construct the values to plug i
 cubic model. This involves linear, quadratic, triple-cross terms, and self-cubed terms. 
 """
 def construct_cubic_vector(statistics):
-    linear_vector = construct_linear_vector(statistics)
     quadratic_vector = construct_quadratic_vector(statistics)
     cubic_vector = []
-    # Cross terms
-    for i in range(0, len(statistics)):
-        for j in range(i + 1, len(statistics)):
-            quadratic_vector.append(statistics[i] * statistics[j])
-    # Self-squared terms
-    for i in range(0, len(statistics)):
-        quadratic_vector.append(statistics[i] * statistics[i])
-    # Flatten the 2 vectors combined
-    flat_vector = list(itertools.chain.from_iterable([linear_vector, quadratic_vector])) 
-    print flat_vector
+    # Triplet - cross terms
+    for subset in itertools.combinations(range(0, len(statistics)), 3):
+        cubic_vector.append(reduce(lambda x,y: x*y, [statistics[i] for i in subset]))
+    # Single term squared multiplied by 2 other terms
+    for idx in range(0, len(statistics)):
+        indices = list(range(0, len(statistics)))
+        indices.remove(idx)
+        for subset in itertools.combinations(indices, 2):
+            cross_term = reduce(lambda x,y: x*y, [statistics[i] for i in subset])
+            cubic_vector.append(cross_term * (statistics[idx]**2))
+    # Self-cubed terms
+    for idx in range(0, len(statistics)):
+        cubic_vector.append(statistics[idx] * statistics[idx])
+    # Flatten the 2 combined vectors
+    flat_vector = list(itertools.chain.from_iterable([quadratic_vector, cubic_vector]))
     return flat_vector
