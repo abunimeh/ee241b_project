@@ -71,6 +71,12 @@ def construct_cubic_model(sequence_paths):
     print(power_model)
     return power_model
 
+def construct_full_linear_model(sequence_paths):
+    for idx in range(0, len(sequence_paths)):
+        power = util.compute_power('%s_pt_power' % sequence_paths[idx])
+        statistics = util.compute_input_statistics(sequence_paths[idx])
+    sys.exit(0)
+
 def save_statistics_histogram(sequence_paths, histogram_output_path):
     # Compute histograms for every model statistic
     Pin = []
@@ -140,6 +146,8 @@ def main():
         power_model = construct_quadratic_model(sequence_paths)
     elif model_type == 'cubic':
         power_model = construct_cubic_model(sequence_paths)
+    elif model_type == 'full_linear':
+        power_model = construct_full_linear_model(sequence_paths)
     else:
         print('Provide a valid power model type')
         sys.exit(1)

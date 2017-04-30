@@ -150,6 +150,29 @@ def compute_power(input_pt_file):
     power_string = [float(x) for x in power_string]
     return power_string[3]
 
+def compute_input_statistics(input_sequence_file):
+    input_vectors = []
+    with open(input_sequence_file, 'r') as f:
+        for line in f:
+            bits = bitarray.bitarray(line.strip())
+            input_vectors.append(bits)
+
+    num_inputs = input_vectors[0].length()
+
+    # Compute Pin for every input bit separately
+    Pin = []
+    for input_idx in range(0, num_inputs):
+        high_values = 0
+        for vector_idx in range(0, len(input_vectors)):
+            if input_vectors[vector_idx][input_idx] == True:
+                high_values = high_values + 1
+        Pin.append(high_values / float(len(input_vectors)))
+
+    # Compute Din for every input bit separately
+    Din = []
+    #for input_idx in range(0, num_inputs):
+        
+
 def compute_statistics(input_sequence_file, output_sequence_file):
     input_vectors = []
     output_vectors = []
