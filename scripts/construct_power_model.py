@@ -36,7 +36,21 @@ def construct_linear_model(sequence_paths):
     for idx in range(0, len(sequence_paths)):
         power = util.compute_power('%s_pt_power' % sequence_paths[idx])
         statistics = util.compute_statistics(sequence_paths[idx], '%s_out' % sequence_paths[idx])
-        A[idx] = [1, statistics[0], statistics[1], statistics[2], statistics[3]]
+        A[idx] = util.construct_linear_vector(statistics)
+        b[idx] = power
+    power_model = np.linalg.lstsq(A, b)[0]
+    print('Computed these coefficients using least squares')
+    print(power_model)
+    return power_model
+
+def construct_quadratic_model(sequence_paths):
+    print('Computing quadratic power model based on overall Pin, Din, SCin, Dout')
+    A = np.zeros((len(sequence_paths), 15))
+    b = np.zeros((len(sequence_paths), 1))
+    for idx in range(0, len(sequence_paths)):
+        power = util.compute_power('%s_pt_power' % sequence_paths[idx])
+        statistics = util.compute_statistics(sequence_paths[idx], '%s_out' % sequence_paths[idx])
+        A[idx] = util.construct_quadratic_vector(statistics)
         b[idx] = power
     power_model = np.linalg.lstsq(A, b)[0]
     print('Computed these coefficients using least squares')

@@ -2,6 +2,7 @@ import os
 import numpy as np
 import bitarray
 from scipy.interpolate import griddata 
+import itertools
 
 def prompt(message, errormessage, isvalid):
     """Prompt for input given a message and return that value after verifying the input.
@@ -213,3 +214,52 @@ def compute_power_estimate(power_model, sequence_statistics):
         if np.isnan(power_estimate_linear[idx]):
             power_estimate_linear[idx] = power_estimate_nn[idx]
     return power_estimate_linear
+
+"""
+Given the 'statistics' for a particular sequence, construct the values that you can plug
+into a linear model to compute the matrix multiplication.
+"""
+def construct_linear_vector(statistics):
+    nested_vector = [[1.0], list(statistics)]
+    # Flatten vector
+    flat_vector =  list(itertools.chain.from_iterable(nested_vector))
+    return flat_vector
+
+"""
+Given the 'statistics' for a particular sequence, construct the values to plug into a 
+quadratic model. This involves the linear terms as well as cross terms and square terms.
+"""
+def construct_quadratic_vector(statistics):
+    linear_vector = construct_linear_vector(statistics)
+    quadratic_vector = []
+    # Cross terms
+    for i in range(0, len(statistics)):
+        for j in range(i + 1, len(statistics)):
+            quadratic_vector.append(statistics[i] * statistics[j])
+    # Self-squared terms
+    for i in range(0, len(statistics)):
+        quadratic_vector.append(statistics[i] * statistics[i])
+    # Flatten the 2 vectors combined
+    flat_vector = list(itertools.chain.from_iterable([linear_vector, quadratic_vector])) 
+    print flat_vector
+    return flat_vector
+
+"""
+Given the 'statistics' for a particular sequence, construct the values to plug into a 
+cubic model. This involves linear, quadratic, triple-cross terms, and self-cubed terms. 
+"""
+def construct_cubic_vector(statistics):
+    linear_vector = construct_linear_vector(statistics)
+    quadratic_vector = construct_quadratic_vector(statistics)
+    cubic_vector = []
+    # Cross terms
+    for i in range(0, len(statistics)):
+        for j in range(i + 1, len(statistics)):
+            quadratic_vector.append(statistics[i] * statistics[j])
+    # Self-squared terms
+    for i in range(0, len(statistics)):
+        quadratic_vector.append(statistics[i] * statistics[i])
+    # Flatten the 2 vectors combined
+    flat_vector = list(itertools.chain.from_iterable([linear_vector, quadratic_vector])) 
+    print flat_vector
+    return flat_vector
