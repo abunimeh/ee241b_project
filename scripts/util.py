@@ -199,22 +199,6 @@ def compute_statistics(input_sequence_file, output_sequence_file):
     
     return (Pin, Din, SCin, Dout)
 
-def compute_power_estimate(power_model, sequence_statistics):
-    points = []
-    values = []
-    for statistics,power in power_model.iteritems():
-        points.append(np.array(statistics))
-        values.append(power)
-    points = np.array(points)
-    values = np.array(values)
-    sequence_statistics = np.array(sequence_statistics)
-    power_estimate_nn = griddata(points, values, sequence_statistics, method='nearest')
-    power_estimate_linear = griddata(points, values, sequence_statistics, method='linear')
-    for idx in range(0, len(power_estimate_linear)):
-        if np.isnan(power_estimate_linear[idx]):
-            power_estimate_linear[idx] = power_estimate_nn[idx]
-    return power_estimate_linear
-
 """
 Given the 'statistics' for a particular sequence, construct the values that you can plug
 into a linear model to compute the matrix multiplication.
@@ -266,3 +250,38 @@ def construct_cubic_vector(statistics):
     # Flatten the 2 combined vectors
     flat_vector = list(itertools.chain.from_iterable([quadratic_vector, cubic_vector]))
     return flat_vector
+
+def compute_4d_table_power_estimate(power_model, sequence_statistics):
+    points = []
+    values = []
+    for statistics,power in power_model.iteritems():
+        points.append(np.array(statistics))
+        values.append(power)
+    points = np.array(points)
+    values = np.array(values)
+    sequence_statistics = np.array(sequence_statistics)
+    power_estimate_nn = griddata(points, values, sequence_statistics, method='nearest')
+    power_estimate_linear = griddata(points, values, sequence_statistics, method='linear')
+    for idx in range(0, len(power_estimate_linear)):
+        if np.isnan(power_estimate_linear[idx]):
+            power_estimate_linear[idx] = power_estimate_nn[idx]
+    return power_estimate_linear
+
+def compute_coeff_based_power_estimate(power_model, sequence_statistics, power_model_type):
+    x = power_model
+    A = []
+    if power_model_type == 'linear':
+        A = np.zeros((len(sequence_statistics), 5))
+    elif power_model_type == 'quadratic':
+        A = np.zeros((len(sequence_statistics), 15))
+    elif power_model_type == 'cubic':
+        A = np.zeros((len(sequence_statistics), 35))
+    for idx in range(0, len(sequence_statistics)):
+       if power_model_type == 'linear':
+           A[idx] = construct_linear_vector(sequence_statistics[idx])
+       elif power_model_type == 'quadratic':
+           A[idx] = construct_quadratic_vector(sequence_statistics[idx])
+       elif power_model_type == 'cubic':
+           A[idx] = construct_cubic_vector(sequence_statistics[idx])
+    return np.dot(A, x) 
+

@@ -27,7 +27,7 @@ def construct_4d_table(sequence_paths):
     final_power_model = {}
     for stat_tuple, power_list in power_model.iteritems():
         final_power_model[stat_tuple] = np.mean(power_list)
-    return power_model
+    return final_power_model
 
 def construct_linear_model(sequence_paths):
     print('Computing linear power model based on overall Pin, Din, SCin, Dout')
