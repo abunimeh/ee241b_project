@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import bitarray
+from scipy.interpolate import griddata 
 
 def prompt(message, errormessage, isvalid):
     """Prompt for input given a message and return that value after verifying the input.
@@ -88,7 +89,7 @@ def generate_testbench(inputs, outputs, module_name, vectors_per_sequence, seque
             tb_file.write('\t\tf = $fopen("%s", "w");\n' % (sequence_file + '_out'))
             tb_file.write('\t\tfor(i = 0; i < %d; i = i + 1) begin\n' % (vectors_per_sequence))
             tb_file.write('\t\t\tdut_input = testvector[i];\n')
-            tb_file.write('\t\t\t#1;\n')
+            tb_file.write('\t\t\t#5;\n')
             tb_file.write('\t\t\t// write dut_output to file\n')
             tb_file.write('\t\t\t$fwrite(f, "%b\\n", dut_output);\n')
             tb_file.write('\t\tend\n')
@@ -137,3 +138,74 @@ def generate_makefrag(module_name, output_makefrag_path):
         makefrag_file.write("pt_toplevel = %s\n" % (module_name))
         makefrag_file.write("pt_testharness = %s_tb\n" % (module_name))
         makefrag_file.write("pt_toplevelinst = %s_inst\n" % (module_name))
+
+def compute_power(input_pt_file):
+    contents = []
+    with open(input_pt_file, 'r') as f:
+        contents = f.readlines()
+    power_string = [x.strip() for x in contents[-2].split(' ')]
+    power_string = [x for x in power_string if x != ''] 
+    power_string = power_string[1:5]
+    power_string = [float(x) for x in power_string]
+    return power_string[3]
+
+def compute_statistics(input_sequence_file, output_sequence_file):
+    input_vectors = []
+    output_vectors = []
+    with open(input_sequence_file, 'r') as f:
+        for line in f:
+            bits = bitarray.bitarray(line.strip())
+            input_vectors.append(bits)
+    with open(output_sequence_file, 'r') as f:
+        for line in f:
+            bits = bitarray.bitarray(line.strip())
+            output_vectors.append(bits)
+
+    num_inputs = input_vectors[0].length()
+    num_outputs = output_vectors[0].length()
+
+    # Compute Pin (average input signal probability)
+    total_row_pin = 0.0
+    for input_vector in input_vectors:
+        total_row_pin = total_row_pin + (float(input_vector.count(True)) / float(num_inputs))
+    Pin = total_row_pin / float(len(input_vectors))
+
+    # Compute Din (average input transition activity)
+    total_transition_density = 0.0
+    for idx in range(1, len(input_vectors)):
+        transition_vector = input_vectors[idx-1] ^ input_vectors[idx]
+        total_transition_density = total_transition_density + float(transition_vector.count(True)) / float(num_inputs)
+    Din = total_transition_density / float(len(input_vectors) - 1)
+
+    # Compute Dout (average output transition activity)
+    total_transition_density = 0.0
+    for idx in range(1, len(output_vectors)):
+        transition_vector = output_vectors[idx-1] ^ output_vectors[idx]
+        total_transition_density = total_transition_density + float(transition_vector.count(True)) / float(num_outputs)
+    Dout = total_transition_density / float(len(output_vectors) - 1)
+
+    # Compute SCin (average input spatial correlation coefficient)
+    scin_total = 0.0
+    for bit_idx1 in range(0, num_inputs):
+        for bit_idx2 in range(bit_idx1 + 1, num_inputs):
+            temp_sum = 0.0
+            for time_idx in range(0, len(input_vectors)):
+                vec = input_vectors[time_idx]
+                if (vec[bit_idx1] == True) and (vec[bit_idx2] == True):
+                    temp_sum = temp_sum + 1
+            scin_total = scin_total + (float(temp_sum) / float(len(input_vectors)))
+    SCin = scin_total * (2.0 / (num_inputs * (num_inputs-1)))
+    
+    return (Pin, Din, SCin, Dout)
+
+def compute_power_estimate(power_model, sequence_statistics):
+    print power_model
+    points = []
+    values = []
+    for statistics,power in power_model.iteritems():
+        points.append(statistics)
+        values.append(power)
+    print np.size(points)
+    print np.size(values)
+    power_estimate = griddata(points, values, sequence_statistics, method='linear')
+    return power_estimate
