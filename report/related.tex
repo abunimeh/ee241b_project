@@ -1,0 +1,48 @@
+Analytic power modeling~\cite{Brooks2000, Vijaykrishnan2000, Li2009, Leng2013, Shao2014}
+combined with microarchitectural cycle-level software simulators~\cite{Binkert2011, Patel2011, Wenisch2006}
+is widely used for computer architecture research. This enables early microarchitecture-level
+design space exploration without necessitating RTL development. However, microarchitectural
+software simulators run much slower than real systems, making full execution of applications infeasible.
+Moreover, for different microarchitectures with new technologies, a new analytic power model
+is constructed and strictly validated against real systems or detailed circuit / gate-level simulations,
+which is very difficult for non-traditional hardware designs.
+
+Power modeling based on performance-monitoring counters is also
+popular for power estimation~\cite{Bellosa2000, Bircher2003, Isci2003,
+  Bircher2005, Bircher2007, Bertran2013}.  This method provides a
+quick power estimate by profiling full execution of applications.
+However, its application is also limited to well-known microarchitectures.
+Moreover, it is only practical with existing existing physical systems since
+standard microarchitectural software simulators are extremely slow.
+
+There are significant efforts to accelerate power estimation using an FPGA
+~\cite{Coburn2005, Ghodrat2007, Atienza2006, Bhattacharjee2008, Sunwoo2010, Yang2015, Kim2016}.
+Coburn et al.~\cite{Coburn2005} implement detailed power models directly on the FPGA,
+which suffers from large FPGA resource overhead. Ghodrat et al.~\cite{Ghodrat2007}
+expands the ideas of Coburn et al.~\cite{Coburn2005} by translating part of 
+power computation logic on the FPGA to software to reduce FPGA resource overhead,
+but introduces communication overhead between FPGA and software. These methods
+are inherently lack of scalability due to large overhead of power computation logic. 
+
+On the other hand, Atienza et al.~\cite{Atienza2006} manually attached activity monitoring units
+to the target design on the FPGA. Bhattacharjee et al.~\cite{Bhattacharjee2008} manually implement
+event counters on top of RTL designs to estimate power dissipation from FPGA emulation.
+PrEsto~\cite{Sunwoo2010} generates power models from signals manually selected by users.
+In addition, This technique also requires additional manual efforts to instrument existing
+FPGA simulators with power models. These methods have less FPGA resource overhead,
+but require significant manual efforts as well as designers' intuition.
+
+Yang et al.~\cite{Yang2015} proposes to construct cycle-by-cycle power models
+by pruning probed signals with machine learning without requiring designers' intuition.
+However, this method simply assumes dynamic power dissipation is a linear function of
+primary registers' toggle activities, which is not necessarily always true.
+Also, it instruments the RTL designs with the power computing logic as in PrEsto~\cite{Sunwoo2010},
+which may be automated by commercial CAD tools.
+
+Strober~\cite{Kim2016} automatically transforms RTL designs into FPGA performance simulators
+and also automatically instrument the simulators with scan chains to capture RTL state snapshots.
+Then, the RTL state snapshots are randomly sampled from the FPGA simulation and replayed on
+detailed gate-level simulation to compute the average power. Although, Strober quickly provides
+accurate power estimates with statistically bounded errors, the average power should be computed 
+after the FPGA simulation finishes, preventing online power computation, which is the motivation
+of this paper.

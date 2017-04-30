@@ -1,0 +1,33 @@
+Power dissipation has been a major design constraint not only for embedded and portable systems
+but also for high-end servers and datacenters. A plethora of design strategies have been suggested
+to meet the power constraint while achieving maximum performance. Thus, power estimation 
+methodologies are very important for the evaluation and the validation of novel hardware designs.
+However, accurate and fast application-specific power estimation for complex hardware design
+is still a big challenge for system designers and application developers, which will play
+a more crucial role in the near future as Moore's law is near the end.
+
+Microarchitecture-level power analysis tools calibrated against representative hardware designs
+are widely used by computer architects~\cite{Brooks2000, Vijaykrishnan2000, Li2009, Leng2013, Shao2014}.
+These power models need activity statistics driven from microarchitectural cycle-level software
+simulators~\cite{Binkert2011, Patel2011, Wenisch2006}. 
+This approach helps designers study trace-offs with design parameters in early design phase
+without developing RTL designs. However, this methodology is limited to designs that are similar 
+to what the abstract model is build upon, and requires long simulation times to collect 
+microarchitectural activities from microarchitectural software simulators. 
+Moreover, it is very hard to apply this methodology to non-traditional hardware designs
+such as application-specific accelerators as their power models should be validated against
+RTL designs or existing systems.
+
+Once RTL implementations are available, energy efficiency as well as cycle time and area
+can be evaluated using commercial CAD tools. The existing CAD tools provide very accurate
+performance and power estimates. However, their simulation time is extremely slow, preventing
+design space exporation for realistic applications running on complex hardware designs.
+
+This paper describes an activity-based power modeling methodology for arbitrary RTL,
+which enables fast and accurate cycle-level power estimation for any RTL designs.
+First, signals, which determines the cycle behavior of the target design, are automatically
+selected from the circuit graph. Next, a design-specific power model is constructed and
+trained with the selected signal activities. In addition, the target RTL design is automatically
+instrumented so that the signal activities can be probed during FPGA performance simulation.
+Finally, power dissipation is computed in real time by pausing the performance simulation and
+reading out the signal activities from FPGA.
