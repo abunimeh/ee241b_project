@@ -7,3 +7,5 @@ training_vectors/
 src/*
 !src/bak/*
 build-rvt/MakePowerEstimation
+data/
+models/

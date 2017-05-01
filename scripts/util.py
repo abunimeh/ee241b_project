@@ -154,10 +154,11 @@ def compute_input_statistics(input_sequence_file):
     input_vectors = []
     with open(input_sequence_file, 'r') as f:
         for line in f:
-            bits = bitarray.bitarray(line.strip())
+            bits = list(line.strip())#bitarray.bitarray(line.strip())
+            bits = [int(x) for x in bits]
             input_vectors.append(bits)
-
-    num_inputs = input_vectors[0].length()
+    print input_vectors 
+    num_inputs = len(input_vectors[0])
 
     # Compute Pin for every input bit separately
     Pin = []
