@@ -23,11 +23,11 @@ can be evaluated using commercial CAD tools. The existing CAD tools provide very
 performance and power estimates. However, their simulation time is extremely slow, preventing
 design space exporation for realistic applications running on complex hardware designs.
 
-This paper describes an activity-based power modeling methodology for arbitrary RTL,
-which enables fast and accurate cycle-level power estimation for any RTL designs.
-First, signals, which determines the cycle behavior of the target design, are automatically
-selected from the circuit graph. Next, a design-specific power model is constructed and
-trained with the selected signal activities. In addition, the target RTL design is automatically
-instrumented so that the signal activities can be probed during FPGA performance simulation.
-Finally, power dissipation is computed in real time by pausing the performance simulation and
-reading out the signal activities from FPGA.
+This paper describes an automatic activity-based power modeling methodology for arbitrary RTL,
+which enables fast and accurate power estimation for any RTL designs.
+First, signals, which determines the cycle behaviors of the target design, are automatically
+selected by analyzing the circuit graph. Next, a design-specific activity power model is constructed and
+trained in terms of the selected signal activities. In addition, the target RTL design is automatically
+instrumented so that the signal activities can be probed during performance simulation on the FPGA.
+Finally, power dissipation is estimated in real time by pausing the FPGA performance simulation and
+reading out the signal activities from the FPGA.

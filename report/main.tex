@@ -320,7 +320,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Fast and Accurate Activity-based Cycle-level Power Modeling for Arbitrary RTL}
+\title{Automatic Activity-based Power Modeling for Arbitrary RTL}
 
 % author names and affiliations
 % use a multiple column layout for up to three different
@@ -368,25 +368,23 @@
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-This paper presents a novel methodology to accurately and quickly
-predict power dissipation of arbitrary RTL designs during performance simulation.
+This paper presents a novel methodology to automatically construct
+power models for any RTL designs, which accurately and quickly
+reports the power estimation during performance simulation on the FPGA.
 First, important signals that are most sensitive to power dissipation
 are selected by analyzing the circuit graph of the target RTL design.
-Next, design-specific cycle-level power models are accurately constructed
-and trained by running microbenchmakrs, random instruction streams,
-and execution sample snapshots from long-running applications,
-and using the important signal list, the RTL signal activities,
-and the power estimates from commercial CAD tools.
-In addition, the performance simulators generated from 
+Next, design-specific activity-based power models are automatically and 
+accurately constructed and trained with the selected signals, 
+the RTL signal activities, and the power estimates from commercial CAD tools.
+In addition, the FPGA performance simulators automatically generated from 
 RTL designs are automatically instrumented with signal activity
-counters. Power dissipation is readily predicted during FPGA simulation
-by reading out the activity counter values. Finally, the power models
+counters. Power dissipation is readily predicted during performance simulation
+on the FPGA by reading out the activity counter values. Finally, the power models
 are validated by replaying random RTL state sample snapshots on
 detailed gate-level simulation, which provides accurate power estimates
-with statistically bounded errors. This methodology will be first
-demonstrated using RISCV-mini, a simple 3-stage pipeline with instruction
-and data caches, and applied to more complex designs including
-RocketChip, Hwacha, and BOOM.
+with statistically bounded errors. Automatic power model construction is
+demonstrated with simple designs, which can be also used for more complex designs
+including RocketChip, Hwacha, and BOOM.
 \end{abstract}
 
 % no keywords
