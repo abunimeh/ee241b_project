@@ -525,12 +525,18 @@ was readily obtained by pausing the simulation and reading out
 the activity counters. Finally, the power model was validated
 and further trained by replaying random RTL state snapshots.
 
+In this project, we evaluated automatic signal selection and
+power modeling with simple designs. In the future, we will
+complete the FPGA instrumentation, power prediction, and
+power validation flows and eventually evaluate this methodology
+using more complex designs like Rocket-chip, Hwacha, and BOOM.
+
 One possible application of this methodology is fast DVFS
 modeling using FPGA simulation. To enable DVFS in simulation,
 online power prediction must be available for the
 power management unit model to control voltage and
 frequency. By using this methodology, it is expected
-we will simulate DVFS with FPGA performance simulatros
+we will simulate DVFS with FPGA performance simulators
 in the near future.
 
 % conference papers do not normally have an appendix
