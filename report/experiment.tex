@@ -4,52 +4,92 @@ To validate the accuracy of the power macromodel proposed in~\cite{Najm2000_2}, 
 The combinational circuits used in this study were the following ISCAS 85 benchmark circuits:
 
 \begin{itemize}
-	\item \em{c17}: 6 NAND gates
-	\item \em{c432}: 27-channel interrupt controller
-	\item \em{c499}: 32-bit SEC
-	\item \em{c880}: 8-bit ALU
-	\item \em{c1908}: 16-bit SEC/DED
-	\item \em{c2670}: 12-bit ALU
-	\item \em{c6288}: 16x16 multiplier
-	\item \em{c7552}: 32-bit adder/comparator 
+	\item \textit{c17}: 6 NAND gates
+	\item \textit{c432}: 27-channel interrupt controller
+	\item \textit{c499}: 32-bit SEC
+	\item \textit{c880}: 8-bit ALU
+	\item \textit{c1908}: 16-bit SEC/DED
+	\item \textit{c2670}: 12-bit ALU
+	\item \textit{c6288}: 16x16 multiplier
+	\item \textit{c7552}: 32-bit adder/comparator 
 \end{itemize}
 
 The training and testing datasets consisted of 300 sequences of 30 vectors. They were run through the DUT using RTL simulation and post-PAR gate-level simulation. The gate-level simulations were used to derive switching activity files which when passed to PrimeTime PX gave a power estimate for a given sequence. Using the input and output vectors, and the power estimate from PrimeTime the 4 following power macromodels were constructed:
 
 \begin{itemize}
-	\item \em{4D Table}: A simple map from a $P_{in}, D_{in}, SC_{in}, D_{out}$ vector to a power estimate.
-	\item \em{Linear Model}: Coefficients were derived for an equation of the form $c_0 + c_1 P_{in} + c_2 D_{in} + c_3 SC_{in} + c_4 D_{out}$ using least squares regression. (5 coefficients)
-	\item \em{Quadratic Model}: Coefficients were derived for an equation consisting of the linear terms, but also cross terms and self-squared terms using least squares regression. (15 coefficients)
-	\item \em{Cubic Model}: Added triplet cross terms and self-cubed terms. (35 coefficients)
+	\item \textit{4D Table}: A simple map from a $P_{in}, D_{in}, SC_{in}, D_{out}$ vector to a power estimate.
+	\item \textit{Linear Model}: Coefficients were derived for an equation of the form $c_0 + c_1 P_{in} + c_2 D_{in} + c_3 SC_{in} + c_4 D_{out}$ using least squares regression. (5 coefficients)
+	\item \textit{Quadratic Model}: Coefficients were derived for an equation consisting of the linear terms, but also cross terms and self-squared terms using least squares regression. (15 coefficients)
+	\item \textit{Cubic Model}: Added triplet cross terms and self-cubed terms. (35 coefficients)
 \end{itemize}
 
 Once the models were constructed and trained using the training dataset, they were used to make predictions on the testing dataset.
 
 4D table prediction involves interpolating new ($P_{in}, D_{in}, SC_{in}, D_{out}$) vectors on the training dataset: if interpolation wasn't possible due to the testing vector being outside the convex hull of the training vectors, then the nearest neighbor's power estimate was used. Prediction on the linear, quadratic, and cubic models was performed with simple matrix multiplication of the testing vectors and the previously calculated coefficients.
 
-Errors in the the macromodel were measured and are summarized in Figure \ref{fig:rms_error}
+Errors in the the macromodel were measured and are summarized in Figure \ref{fig:rms_error} and Figure \ref{fig:max_error}.
 
 \begin{figure*}
 	\centering
-	\includegraphics[clip, trim=0.5cm 2.5cm 0.5cm 2.5cm,width=0.85\textwidth,height=\textheight,keepaspectratio]{images/macromodel_rms_errors.pdf}
+	\includegraphics[clip, trim=0.5cm 2.5cm 0.5cm 2.5cm,width=0.85\textwidth,height=\textheight,keepaspectratio]{images/error_plot.pdf}
 	\caption{RMS errors from macromodel power estimation, error bars indicate 1 SD}
 	\label{fig:rms_error}
 \end{figure*}
 
+\begin{figure*}
+	\centering
+	\includegraphics[clip, trim=0.5cm 3cm 0.5cm 3cm,width=0.85\textwidth,height=\textheight,keepaspectratio]{images/max_error_plot.pdf}
+	\caption{Max errors from macromodel power estimation, worst case accuracy}
+	\label{fig:max_error}
+\end{figure*}
 
-To demonstrate our idea, we will start from a simple design, RISCV-mini~\cite{riscv-mini}.
+\subsection{Sequential Circuit Power Modeling}
+
+To demonstrate the capability of the automatic signal section methodology for sequential logic,
+we evaluate our methodology using simple Chisel designs described as follows:
+
+\begin{itemize}
+	\item \textit{GCD}: hardware implementation of Euclidean algorithm
+	\item \textit{Parity}: computation for the parity of inputs
+	\item \textit{Stack}: hardware implementation of stack
+	\item \textit{Risc}: very simple single-cycle pipeline
+	\item \textit{RiscSRAM}: very simple multi-cycle pipeline with SRAMs
+\end{itemize}
+
+We run 20 sets of simulation to train the power models and use different 20 sets of simulation
+to test the power models. Quadratic models are used for \emph{GCD} and \emph{Parity}, and 
+cubic models are used for \emph{Stack}, \emph{Risc}, and \emph{RiscSRAM}. 
+Table~\ref{tbl:results} shows the power model errors for the designs. The maximum error of
+\emph{Stack} is somewhat warrisome, but we may address it by having more training sets.
+Impressively, this methodology works well for more complex designs like \emph{Risc} and \emph{RiscSRAM}.
+
+\begin{table*}
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c |}
+    \hline
+    \textbf{Design} & \textbf{GCD} & \textbf{Parity} & \textbf{Stack} & \textbf{Risc} & \textbf{RiscSRAM} \\ \hline
+	\textbf{Number of Selected Signals and Busses} & 7 & 3 & 8 & 11 & 15 \\ \hline
+	\textbf{Normalized RMS error(\%)} &  29.3 & 1.9 & 31.9 & 4.0 & 10.0 \\ \hline
+	\textbf{Average error(\%)}        &   5.1 & 0.9 & 26.9 & 2.3 & 6.5 \\ \hline
+	\textbf{Maximum error(\%)}        &  16.5 & 2.4 & 153.7 & 7.4 & 20.5 \\ \hline
+
+  \end{tabular}
+  \caption{Evaluation with Examples}
+  \label{tbl:results}
+\end{center}
+\end{table*}
+
+To demonstrate how well signal selection works, we use a more complex design, RISCV-mini~\cite{riscv-mini}. 
 RISCV-mini implements RV32I of the User-level ISA Version 2.0~\cite{riscv-user-2.0} and
 the Machine-level ISA of the Privileged Architecture Version 1.7~\cite{riscv-prev-1.7}.
 RISCV-mini includes a 3-stage pipeline as well as instruction and data caches as shown
-in Figure~\ref{fig:riscv_mini}, which is neither too simple nor too complex. This is designed
-to validate novel ideas before applying them to more complex designs including
-RocketChip~\cite{RocketChip}, Hwacha~\cite{Hwacha}, and BOOM~\cite{BOOM}.
-We expect that the methodology proposed in this report will accurately predict
-the power dissipation of microbenchmarks(median, multiply, qsort, towers, and vvadd) running on RISCV-mini.
+in Figure~\ref{fig:riscv_mini}, which is neither too simple nor too complex.
+From RISCV-mini, 108 signals are selected. However, about 50~\% of theses signals
+are due to lack of inter-module analysis, which will be cut out from pass optimization.
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=0.85\textwidth,height=\textheight,keepaspectratio]{images/riscv_mini.pdf}
-	\caption{RISCV-mini Pipeline}
-	\label{fig:riscv_mini}
-\end{figure*}
+\begin{figure}
+ 	\centering
+ 	\includegraphics[width=\columnwidth,height=\textheight,keepaspectratio]{images/riscv_mini.pdf}
+ 	\caption{RISCV-mini Pipeline}
+ 	\label{fig:riscv_mini}
+\end{figure}
