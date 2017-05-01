@@ -70,6 +70,19 @@ but also for further training the power model for more accurate power estimates.
 	\label{fig:power_modeling}
 \end{figure}
 
+\subsubsection{Macromodels for Complex Combinational Logic}
+Previous work~\cite{Sunwoo2010} suggests that linear power models for complex combinational logic such as ALUs, SEC/DED circuits, interrupt controllers, and multipliers are inaccurate. To overcome this issue, we turn to macromodels which attempt to estimate the power of complex logic by only looking at the input and output switching activity of the combinational block. In this paper we will measure the accuracy of a previously proposed power macromodel that uses 4 statistics $P_{in}, D_{in}, SC_{in}, D_{out}$.~\cite{Najm2000}\cite{Najm2000_2}
+
+This macromodel considers sequences of input vectors into a combinational block. Each sequence may contain $N$ input vectors. Then we can define for a given sequence,
+\begin{itemize}
+	\item $P_{in}$ = average number of input bits that are logic 1 across a sequence
+	\item $D_{in}$ = average number of input bit transitions across a sequence (average input transition density)
+	\item $SC_{in}$ = average spacial correlation coefficient across a sequence and across all input bit pairs
+	\item $D_{out}$ = average number of output bit transitions across a sequence (average output transition density)
+\end{itemize}
+
+We will generate multiple sequences of input training vectors, derive an accurate power estimate from PrimeTime, and use the computed statistics above to train the macromodel. We will then generate a separate set of sequences which will be used to test the macromodel's accuracy as compared to the PrimeTime power estimate.
+
 \subsection{RTL Instrumentation}
 \label{sec:instrumentation}
 The RTL instrumentation is built upon the Chisel3 and FIRRTL port of the Strober's flow
