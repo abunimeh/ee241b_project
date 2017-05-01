@@ -26,7 +26,7 @@ def scatter3d(x,y,z, cs, colorsMap='jet', showplot=False):
     return ax
 
 def main():
-    power_model_binary_path = os.path.abspath('../models/c6288_power_model/4d_table_power_model')
+    power_model_binary_path = os.path.abspath('../models/c7552_power_model/4d_table_power_model')
     power_model = None
     print('Reading power model binary (pickled) from path %s' % power_model_binary_path)
     with open(power_model_binary_path, 'rb') as f:
@@ -45,8 +45,8 @@ def main():
         power.append(power_val * 1e6)
 
     ax = scatter3d(Pin, Din, power, power, showplot=False)
-    ax.set_xlabel('Din')
-    ax.set_ylabel('Pin')
+    ax.set_xlabel('Pin')
+    ax.set_ylabel('Din')
     ax.set_zlabel('Power (uW)')
     plt.savefig('3d_plot.pdf')
 
