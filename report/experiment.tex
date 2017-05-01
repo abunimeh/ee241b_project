@@ -44,19 +44,52 @@ Errors in the the macromodel were measured and are summarized in Figure \ref{fig
 \end{figure*}
 
 \subsection{Sequential Circuit Power Modeling}
-To demonstrate our idea, we will start from a simple design, RISCV-mini~\cite{riscv-mini}.
+
+To demonstrate the capability of the automatic signal section methodology for sequential logic,
+we evaluate our methodology using simple Chisel designs described as follows:
+
+\begin{itemize}
+	\item \textit{GCD}: hardware implementation of Euclidean algorithm
+	\item \textit{Parity}: computation for the parity of inputs
+	\item \textit{Stack}: hardware implementation of stack
+	\item \textit{Risc}: very simple single-cycle pipeline
+	\item \textit{RiscSRAM}: very simple multi-cycle pipeline with SRAMs
+\end{itemize}
+
+We run 20 sets of simulation to train the power models and use different 20 sets of simulation
+to test the power models. Quadratic models are used for \emph{GCD} and \emph{Parity}, and 
+cubic models are used for \emph{Stack}, \emph{Risc}, and \emph{RiscSRAM}. 
+Table~\ref{tbl:results} shows the power model errors for the designs. The maximum error of
+\emph{Stack} is somewhat warrisome, but we may address it by having more training sets.
+Impressively, this methodology works well for more complex designs like \emph{Risc} and \emph{RiscSRAM}.
+
+\begin{table*}
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c |}
+    \hline
+    \textbf{Design} & \textbf{GCD} & \textbf{Parity} & \textbf{Stack} & \textbf{Risc} & \textbf{RiscSRAM} \\ \hline
+	\textbf{Number of Selected Signals and Busses} & 7 & 3 & 8 & 11 & 15 \\ \hline
+	\textbf{Normalized RMS error(\%)} &  29.3 & 1.9 & 31.9 & 4.0 & 10.0 \\ \hline
+	\textbf{Average error(\%)}        &   5.1 & 0.9 & 26.9 & 2.3 & 6.5 \\ \hline
+	\textbf{Maximum error(\%)}        &  16.5 & 2.4 & 153.7 & 7.4 & 20.5 \\ \hline
+
+  \end{tabular}
+  \caption{Evaluation with Examples}
+  \label{tbl:results}
+\end{center}
+\end{table*}
+
+To demonstrate how well signal selection works, we use a more complex design, RISCV-mini~\cite{riscv-mini}. 
 RISCV-mini implements RV32I of the User-level ISA Version 2.0~\cite{riscv-user-2.0} and
 the Machine-level ISA of the Privileged Architecture Version 1.7~\cite{riscv-prev-1.7}.
 RISCV-mini includes a 3-stage pipeline as well as instruction and data caches as shown
-in Figure~\ref{fig:riscv_mini}, which is neither too simple nor too complex. This is designed
-to validate novel ideas before applying them to more complex designs including
-RocketChip~\cite{RocketChip}, Hwacha~\cite{Hwacha}, and BOOM~\cite{BOOM}.
-We expect that the methodology proposed in this report will accurately predict
-the power dissipation of microbenchmarks(median, multiply, qsort, towers, and vvadd) running on RISCV-mini.
+in Figure~\ref{fig:riscv_mini}, which is neither too simple nor too complex.
+From RISCV-mini, 108 signals are selected. However, about 50~\% of theses signals
+are due to lack of inter-module analysis, which will be cut out from pass optimization.
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=0.85\textwidth,height=\textheight,keepaspectratio]{images/riscv_mini.pdf}
-	\caption{RISCV-mini Pipeline}
-	\label{fig:riscv_mini}
-\end{figure*}
+\begin{figure}
+ 	\centering
+ 	\includegraphics[width=\columnwidth,height=\textheight,keepaspectratio]{images/riscv_mini.pdf}
+ 	\caption{RISCV-mini Pipeline}
+ 	\label{fig:riscv_mini}
+\end{figure}
