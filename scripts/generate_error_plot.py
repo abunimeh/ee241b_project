@@ -52,10 +52,11 @@ def main():
     sd_cubic = model_sd_rms['cubic']
 
     fig, ax = plt.subplots()
-    rects1 = ax.bar(ind, rms_errors_4d_table, width, color='darkred',) #yerr=sd_4d_table)
-    rects2 = ax.bar(ind + width, rms_errors_linear, width, color='orangered',)# yerr=sd_linear)
-    rects3 = ax.bar(ind + 2*width, rms_errors_quadratic, width, color='lightsalmon',)# yerr=sd_quadratic)
-    rects4 = ax.bar(ind + 3*width, rms_errors_cubic, width, color='peachpuff',)# yerr=sd_cubic)
+    error_bar_params = dict(lw=0.5, capsize=1, capthick=0.5)
+    rects1 = ax.bar(ind, rms_errors_4d_table, width, color='darkred', yerr=sd_4d_table, error_kw=error_bar_params)
+    rects2 = ax.bar(ind + width, rms_errors_linear, width, color='orangered', yerr=sd_linear, error_kw=error_bar_params)
+    rects3 = ax.bar(ind + 2*width, rms_errors_quadratic, width, color='lightsalmon', yerr=sd_quadratic, error_kw=error_bar_params)
+    rects4 = ax.bar(ind + 3*width, rms_errors_cubic, width, color='peachpuff', yerr=sd_cubic, error_kw=error_bar_params)
 
     ax.set_ylabel('Percentage RMS Error')
     ax.set_title('Accuracy of Power Models Across ISCAS 85 Benchmark Circuits')
@@ -66,17 +67,7 @@ def main():
     ax.set_aspect(0.2)
 
     ax.text(rects2[6].get_x() + rects2[6].get_width()/2.0, 15, '%.2f%%' % rms_errors_linear[6], ha='center', va='bottom')
-    #ax.set_yscale("log", nonposy='clip')
     plt.savefig('error_plot.pdf')
 
-def autolabel(rects):
-    """
-    Attach a text label above each bar displaying its height
-    """
-    for rect in rects:
-        height = rect.get_height()
-        ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
-                '%d' % int(height),
-                ha='center', va='bottom')
 if __name__ == "__main__":
     main()
