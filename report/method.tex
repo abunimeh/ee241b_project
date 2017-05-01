@@ -81,7 +81,7 @@ This macromodel considers sequences of input vectors into a combinational block.
 	\item $D_{out}$ = average number of output bit transitions across a sequence (average output transition density)
 \end{itemize}
 
-We will generate multiple sequences of input training vectors, derive an accurate power estimate from PrimeTime, and use the computed statistics above to train the macromodel. We will then generate a separate set of sequences which will be used to test the macromodel's accuracy as compared to the PrimeTime power estimate.
+In the context of power estimation for a large digital design: if a complex combinational block is detected in the design, the power macromodel will be used in place of a linear model. To feed the macromodel with data, the combinational block's inputs and outputs will be instrumented. A small logic block on the FPGA will map the raw input and output signals into a 4-tuple that represents the above statistics, and the tuple will be fed out of the FPGA emulator to be plugged into the power macromodel.
 
 \subsection{RTL Instrumentation}
 \label{sec:instrumentation}
