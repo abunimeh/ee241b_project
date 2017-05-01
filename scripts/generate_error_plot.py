@@ -2,6 +2,7 @@
 This script is all custom, takes no arguments.
 """
 import sys
+import matplotlib
 import matplotlib.pyplot as plt
 import os
 import util
@@ -51,6 +52,7 @@ def main():
     sd_quadratic = model_sd_rms['quadratic']
     sd_cubic = model_sd_rms['cubic']
 
+    matplotlib.rcParams.update({'font.size': 6})
     fig, ax = plt.subplots()
     error_bar_params = dict(lw=0.5, capsize=1, capthick=0.5)
     rects1 = ax.bar(ind, rms_errors_4d_table, width, color='darkred', yerr=sd_4d_table, error_kw=error_bar_params)
