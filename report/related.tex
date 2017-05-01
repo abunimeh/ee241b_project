@@ -15,6 +15,13 @@ However, its application is also limited to well-known microarchitectures.
 Moreover, it is only practical with existing existing physical systems since
 standard microarchitectural software simulators are extremely slow.
 
+There are various attempts to build macro models in the boundary of latches
+~\cite{Najm2000, Najm2000_2, Wu1998, Bogliolo2000}. This methodology is less
+expensive than what the CAD tools do since the power dissipation is expressed
+in terms of the input and output signals of the macro blocks. However,
+this is still very expensive for the FPGA simulation because there are 
+a ton of macro blocks in complex hardware designs.
+
 There are significant efforts to accelerate power estimation using an FPGA
 ~\cite{Coburn2005, Ghodrat2007, Atienza2006, Bhattacharjee2008, Sunwoo2010, Yang2015, Kim2016}.
 Coburn et al.~\cite{Coburn2005} implement detailed power models directly on the FPGA,
@@ -34,9 +41,10 @@ but require significant manual efforts as well as designers' intuition.
 
 Yang et al.~\cite{Yang2015} proposes to construct cycle-by-cycle power models
 by pruning probed signals with machine learning without requiring designers' intuition.
-However, this method simply assumes dynamic power dissipation is a linear function of
-primary registers' toggle activities, which is not necessarily always true.
-Also, it instruments the RTL designs with the power computing logic as in PrEsto~\cite{Sunwoo2010},
+This methodology is built upon the assumption that power dissipation is a function of 
+some primary registers' toggles. However, it lacks of the justification that the truncated SVD
+properly selects the primary registers for complex hardware designs. Also, it instruments
+the RTL designs with the power computing logic as in PrEsto~\cite{Sunwoo2010},
 which may be automated by commercial CAD tools.
 
 Strober~\cite{Kim2016} automatically transforms RTL designs into FPGA performance simulators
