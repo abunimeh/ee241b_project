@@ -72,11 +72,11 @@ def main():
     ax.set_title('Accuracy of Power Models Across ISCAS 85 Benchmark Circuits')
     ax.set_xticks(ind + 1.5*width)
     ax.set_xticklabels(circuits)
-    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0]), models)
+    ax.legend((rects1[0], rects2[0], rects3[0], rects4[0]), models, loc='upper center')
     ax.set_ylim([0,20])
     ax.set_aspect(0.2)
 
-    ax.text(rects2[6].get_x() + rects2[6].get_width(), 15, '%.2f%%' % rms_errors_linear[6], ha='center', va='bottom')
+    ax.text(rects2[6].get_x() + rects2[6].get_width()*3.5, 17.5, '%.2f%%' % rms_errors_linear[6], ha='center', va='bottom')
     plt.savefig('error_plot.pdf')
 
     # Construct a plot for the max error over all sequences for each model type and test circuit
@@ -94,8 +94,8 @@ def main():
     ax.set_ylim([0,100])
     ax.set_aspect(0.03)
 
-    ax.text(rects2[6].get_x() + rects2[6].get_width(), 90, '%.2f%%' % max_errors_linear[6], ha='center', va='bottom')
-    ax.text(rects2[1].get_x() + rects2[1].get_width(), 90, '%.2f%%' % max_errors_linear[1], ha='center', va='bottom')
+    ax.text(rects2[6].get_x() + rects2[6].get_width()*4, 90, '%.2f%%' % max_errors_linear[6], ha='center', va='bottom')
+    ax.text(rects2[1].get_x() + rects2[1].get_width()*4, 90, '%.2f%%' % max_errors_linear[1], ha='center', va='bottom')
     plt.savefig('max_error_plot.pdf')
 if __name__ == "__main__":
     main()
