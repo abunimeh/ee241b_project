@@ -58,7 +58,7 @@ def main():
     rects3 = ax.bar(ind + 2*width, rms_errors_quadratic, width, color='lightsalmon', yerr=sd_quadratic, error_kw=error_bar_params)
     rects4 = ax.bar(ind + 3*width, rms_errors_cubic, width, color='peachpuff', yerr=sd_cubic, error_kw=error_bar_params)
 
-    ax.set_ylabel('Percentage RMS Error')
+    ax.set_ylabel('RMS Error (%)')
     ax.set_title('Accuracy of Power Models Across ISCAS 85 Benchmark Circuits')
     ax.set_xticks(ind + 1.5*width)
     ax.set_xticklabels(circuits)
